@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.wrw.eduonline</groupId>
+    <artifactId>eduonline</artifactId>
+    <version>${eduonline-version}</version>
+  </parent>
+  <artifactId>eduonline-shiro</artifactId>
+  <name>eduonline-shiro</name>
+  <description>权限模块</description>
+  
+  <dependencies>
+		<dependency>
+			<groupId>com.wrw.eduonline</groupId>
+			<artifactId>eduonline-common</artifactId>
+			<version>${eduonline-version}</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+            <!-- mybatis 代码自动生成 -->  
+            <plugin>  
+                <groupId>org.mybatis.generator</groupId>  
+                <artifactId>mybatis-generator-maven-plugin</artifactId>  
+                <version>1.3.2</version>  
+            </plugin>  
+        </plugins>
+    </build>
+</project>

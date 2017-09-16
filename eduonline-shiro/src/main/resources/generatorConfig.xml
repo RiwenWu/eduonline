@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE generatorConfiguration  
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">  
+<!-- 在项目根目录下(pom.xml同级)打开命令行工具：mvn mybatis-generator:generate -->  
+<generatorConfiguration>  
+  
+        <!-- 配置成你本地的mysql-connector-java jar -->  
+        <classPathEntry  
+        location="D:\maven\repo\mysql\mysql-connector-java\5.1.10\mysql-connector-java-5.1.10.jar" />  
+          
+  
+    <context id="baseTradeTables" targetRuntime="MyBatis3">  
+        <commentGenerator>  
+            <property name="suppressAllComments" value="true" />  
+        </commentGenerator>  
+          
+        <!-- 数据库地址、用户名、密码 -->  
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"  
+            connectionURL="jdbc:mysql://127.0.0.1:3306/eduonline" userId="root"  
+            password="249991189">  
+        </jdbcConnection>  
+  
+        <javaTypeResolver>  
+            <property name="forceBigDecimals" value="false" />  
+        </javaTypeResolver>  
+  
+        <!-- 后台生成 -->  
+        <!-- model -->  
+        <javaModelGenerator targetPackage="com.wrw.eduonline.shiro.entity"  
+            targetProject="D:\eclipse_workspace\eduonline\eduonline-shiro\src\main\java">  
+            <property name="enableSubPackages" value="true" />  
+            <property name="trimStrings" value="true" />  
+        </javaModelGenerator>  
+          
+        <!-- Mapper映射 -->  
+        <sqlMapGenerator targetPackage="."  
+            targetProject="D:\eclipse_workspace\eduonline\eduonline-shiro\src\main\resources\mapper">  
+            <property name="enableSubPackages" value="true" />  
+        </sqlMapGenerator>  
+  
+        <!-- Mapper接口 -->  
+        <javaClientGenerator type="XMLMAPPER"  
+            targetPackage="com.wrw.eduonline.shiro.dao" 
+            targetProject="D:\eclipse_workspace\eduonline\eduonline-shiro\src\main\java">  
+            <property name="enableSubPackages" value="true" />  
+        </javaClientGenerator>  
+  
+        <!-- 表 -->  
+        <table tableName="sys_user" domainObjectName="SysUserEntity" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <!-- mvn mybatis-generator:generate -->
+    </context>  
+</generatorConfiguration>

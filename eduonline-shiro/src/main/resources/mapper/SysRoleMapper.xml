@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wrw.eduonline.shiro.dao.SysRoleDao">
+	<resultMap id="BaseResultMap" type="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+		<id column="role_id" property="roleId" jdbcType="BIGINT" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="create_user_id" property="createUserId"
+			jdbcType="BIGINT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="modified_time" property="modifiedTime"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		role_id, role_name, remark, create_user_id, create_time, modified_time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		where role_id = #{roleId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from sys_role
+		where role_id = #{roleId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+		insert into sys_role (role_id, role_name, remark,
+		create_user_id, create_time, modified_time
+		)
+		values (#{roleId,jdbcType=BIGINT}, #{roleName,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},
+		#{createUserId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+		insert into sys_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="roleName != null">
+				role_name,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="createUserId != null">
+				create_user_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="modifiedTime != null">
+				modified_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				#{roleId,jdbcType=BIGINT},
+			</if>
+			<if test="roleName != null">
+				#{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createUserId != null">
+				#{createUserId,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifiedTime != null">
+				#{modifiedTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+		update sys_role
+		<set>
+			<if test="roleName != null">
+				role_name = #{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createUserId != null">
+				create_user_id = #{createUserId,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifiedTime != null">
+				modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where role_id = #{roleId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+		update sys_role
+		set role_name = #{roleName,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR},
+		create_user_id = #{createUserId,jdbcType=BIGINT},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+		where role_id = #{roleId,jdbcType=BIGINT}
+	</update>
+
+	<!-- BaseDao定义的 -->
+	<insert id="save" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity"
+		useGeneratedKeys="true" keyProperty="roleId">
+		insert into sys_role (role_id, role_name, remark,
+		create_user_id, create_time, modified_time
+		)
+		values (#{roleId,jdbcType=BIGINT}, #{roleName,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},
+		#{createUserId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+		update sys_role
+		<set>
+			<if test="roleName != null">
+				role_name = #{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createUserId != null">
+				create_user_id = #{createUserId,jdbcType=BIGINT},
+			</if>
+			<if test="modifiedTime != null">
+				modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where role_id = #{roleId,jdbcType=BIGINT}
+	</update>
+
+	<delete id="deleteBatch">
+		delete from sys_role 
+		where role_id in
+		<foreach item="roleId" collection="array" open="(" separator=","
+			close=")">
+			#{roleId,jdbcType=BIGINT}
+		</foreach>
+		;
+		delete from sys_role_menu where role_id in
+		<foreach item="roleId" collection="array" open="(" separator=","
+			close=")">
+			#{roleId,jdbcType=BIGINT}
+		</foreach>
+		;
+		delete from sys_user_role 
+		where role_id in
+		<foreach item="roleId" collection="array" open="(" separator=","
+			close=")">
+			#{roleId,jdbcType=BIGINT}
+		</foreach>
+	</delete>
+	
+	<select id="queryObject" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		where role_id = #{roleId,jdbcType=BIGINT}
+	</select>
+	
+	<select id="queryList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" /> 
+		from sys_role 
+		<where>
+			<if test="roleName != null and roleName.trim() != ''">
+				and `role_name` like concat('%',#{roleName,jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="createUserId != null">
+				and create_user_id = #{createUserId,jdbcType=BIGINT} 
+			</if>
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by role_id asc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="queryTotal" resultType="int">
+		select count(*) from sys_role 
+		<where>
+			<if test="roleName != null and roleName.trim() != ''">
+				and `role_name` like concat('%',#{roleName,jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="createUserId != null">
+				and create_user_id = #{createUserId,jdbcType=BIGINT} 
+			</if>
+		</where>
+	</select>
+	<!-- BaseDao结束 -->
+	
+	<!-- SysRoleDao定义 -->
+	<select id="queryRoleIdList" resultType="long">
+		select role_id from sys_role where create_user_id = #{createUserId,jdbcType=BIGINT} 
+	</select>
+	<!-- SysRoleDao定义结束 -->
+	
+</mapper>
