@@ -109,15 +109,48 @@
 	</update>
 
 	<!-- BaseDao定义的 -->
-	<insert id="save" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity"
-		useGeneratedKeys="true" keyProperty="roleId">
-		insert into sys_role (role_id, role_name, remark,
-		create_user_id, create_time, modified_time
-		)
-		values (#{roleId,jdbcType=BIGINT}, #{roleName,jdbcType=VARCHAR},
-		#{remark,jdbcType=VARCHAR},
-		#{createUserId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP}
-		)
+	<insert id="save" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+		insert into sys_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="roleName != null">
+				role_name,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="createUserId != null">
+				create_user_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="modifiedTime != null">
+				modified_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				#{roleId,jdbcType=BIGINT},
+			</if>
+			<if test="roleName != null">
+				#{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createUserId != null">
+				#{createUserId,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifiedTime != null">
+				#{modifiedTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
 	</insert>
 
 	<update id="update" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
@@ -128,9 +161,6 @@
 			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
-			</if>
-			<if test="createUserId != null">
-				create_user_id = #{createUserId,jdbcType=BIGINT},
 			</if>
 			<if test="modifiedTime != null">
 				modified_time = #{modifiedTime,jdbcType=TIMESTAMP},

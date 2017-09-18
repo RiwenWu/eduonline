@@ -39,9 +39,9 @@ public interface SysRoleService {
 	
 	/**
 	 * 保存角色
-	 * @param rolt
+	 * @param role
 	 */
-	void save(SysRoleEntity rolt);
+	void save(SysRoleEntity role);
 	
 	/**
 	 * 修改角色

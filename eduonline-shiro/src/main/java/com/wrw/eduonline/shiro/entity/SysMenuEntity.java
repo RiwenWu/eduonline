@@ -183,4 +183,22 @@ public class SysMenuEntity implements Serializable {
 	public void setList(List<?> list) {
 		this.list = list;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getSimpleName());
+		sb.append(" [");
+		sb.append("menuId=").append(menuId);
+		sb.append(", parentId=").append(parentId);
+		sb.append(", name=").append(name);
+		sb.append(", url=").append(url);
+		sb.append(", type=").append(type);
+		sb.append(", icon=").append(icon);
+		sb.append(", order_num=").append(orderNum);
+		sb.append(", create_time=").append(createTime);
+		sb.append(", modified_time=").append(modifiedTime);
+		sb.append("]");
+		return sb.toString();
+	}
 }

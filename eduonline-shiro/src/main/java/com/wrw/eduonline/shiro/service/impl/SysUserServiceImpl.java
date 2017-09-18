@@ -43,7 +43,7 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	public List<Long> queryAllMenuId(Long userId) {
-		return sysUserDao.queryAllMeunId(userId);
+		return sysUserDao.queryAllMenuId(userId);
 	}
 
 	@Override
@@ -92,8 +92,8 @@ public class SysUserServiceImpl implements SysUserService {
 		} else {
 			String pwd = new Sha256Hash(user.getPassword()).toHex();
 			user.setPassword(pwd);
-			user.setModifiedTime(new Date());
 		}
+		
 		sysUserDao.update(user);
 		
 		//检查角色是否越权

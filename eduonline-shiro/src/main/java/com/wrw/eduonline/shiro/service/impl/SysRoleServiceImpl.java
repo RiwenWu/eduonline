@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wrw.eduonline.common.utils.Constant;
@@ -23,6 +24,8 @@ import com.wrw.eduonline.shiro.service.SysUserService;
  * 
  * @version
  */
+
+@Service("sysRoleService")
 public class SysRoleServiceImpl implements SysRoleService {
 
 	@Autowired
@@ -54,6 +57,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 	public void save(SysRoleEntity role) {
 		role.setCreateTime(new Date());
 		role.setModifiedTime(new Date());
+		sysRoleDao.save(role);
 		
 		//检查权限是否越权
 		checkPrems(role);

@@ -38,7 +38,7 @@ public interface SysUserService {
 	SysUserEntity queryByUserName(String userName);
 	
 	/**
-	 * 根据用户I的，查询用户
+	 * 根据用户Id，查询用户
 	 * @param userId
 	 * @return
 	 */

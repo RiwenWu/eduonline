@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wrw.eduonline.common.utils.Constant;
@@ -26,6 +27,8 @@ import com.wrw.eduonline.shiro.service.SysUserService;
  * 创建时间：2017年9月16日 下午7:37:59   
  * @version        
  */
+
+@Service("sysMenuService")
 public class SysMenuServiceImpl implements SysMenuService{
 	
 	@Autowired

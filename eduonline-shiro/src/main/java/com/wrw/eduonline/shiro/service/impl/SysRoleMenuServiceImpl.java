@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.wrw.eduonline.shiro.dao.SysRoleMenuDao;
 import com.wrw.eduonline.shiro.service.SysRoleMenuService;
@@ -19,6 +20,8 @@ import com.wrw.eduonline.shiro.service.SysRoleMenuService;
  * 创建时间：2017年9月16日 下午8:33:28   
  * @version        
  */
+
+@Service("sysRoleMenuService")
 public class SysRoleMenuServiceImpl implements SysRoleMenuService{
 
 	@Autowired

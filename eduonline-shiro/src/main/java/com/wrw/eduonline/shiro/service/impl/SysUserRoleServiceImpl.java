@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.wrw.eduonline.shiro.dao.SysUserRoleDao;
 import com.wrw.eduonline.shiro.service.SysUserRoleService;
@@ -19,6 +20,8 @@ import com.wrw.eduonline.shiro.service.SysUserRoleService;
  * 创建时间：2017年9月16日 下午4:15:19   
  * @version        
  */
+
+@Service("sysUserRoleService")
 public class SysUserRoleServiceImpl implements SysUserRoleService {
 
 	@Autowired

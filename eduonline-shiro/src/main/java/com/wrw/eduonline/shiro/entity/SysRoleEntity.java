@@ -111,4 +111,19 @@ public class SysRoleEntity implements Serializable {
 	public void setMenuIdList(List<Long> menuIdList) {
 		this.menuIdList = menuIdList;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getSimpleName());
+		sb.append(" [");
+		sb.append("roleId=").append(roleId);
+		sb.append(", roleName=").append(roleName);
+		sb.append(", remark=").append(remark);
+		sb.append(", create_user_id=").append(createUserId);
+		sb.append(", create_time=").append(createTime);
+		sb.append(", modified_time=").append(modifiedTime);
+		sb.append("]");
+		return sb.toString();
+	}
 }

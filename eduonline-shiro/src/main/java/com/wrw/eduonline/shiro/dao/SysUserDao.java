@@ -30,7 +30,7 @@ public interface SysUserDao extends BaseDao<SysUserEntity>{
 	 * @param userId
 	 * @return
 	 */
-	List<Long> queryAllMeunId(Long userId);
+	List<Long> queryAllMenuId(Long userId);
 	
 	/**
 	 * 根据用户名，查询系统用户
