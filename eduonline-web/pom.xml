@@ -9,4 +9,26 @@
   <packaging>war</packaging>
   <name>eduonline-web</name>
   <description>后台页面</description>
+  
+  <dependencies>
+        <dependency>
+			<groupId>com.wrw.eduonline</groupId>
+			<artifactId>eduonline-common</artifactId>
+			<version>${eduonline-version}</version>
+		</dependency>
+        <dependency>
+            <groupId>com.wrw.eduonline</groupId>
+            <artifactId>eduonline-shiro</artifactId>
+            <version>${eduonline-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.wrw.eduonline</groupId>
+            <artifactId>eduonline-api</artifactId>
+            <version>${eduonline-version}</version>
+        </dependency>
+    </dependencies>
+	<build>
+		<finalName>eduonline</finalName>
+	</build>
+  
 </project>

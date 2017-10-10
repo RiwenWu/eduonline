@@ -81,5 +81,5 @@ public interface SysUserService {
 	 * @param user
 	 * @return
 	 */
-	void updatePassword(SysUserEntity user);
+	int updatePassword(Long userId, String password, String newPassword);
 }

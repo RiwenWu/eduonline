@@ -1,6 +1,7 @@
 package com.wrw.eduonline.shiro.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -109,9 +110,13 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
-	public void updatePassword(SysUserEntity user) {
-		user.setModifiedTime(new Date());
-		sysUserDao.update(user);
+	public int updatePassword(Long userId, String password, String newPassword) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("password", password);
+		map.put("newPassword", newPassword);
+		map.put("modified_time", new Date());
+		return sysUserDao.updatePassword(map);
 	}
 
 	/**
@@ -133,4 +138,5 @@ public class SysUserServiceImpl implements SysUserService {
 		}
 	}
 
+	
 }

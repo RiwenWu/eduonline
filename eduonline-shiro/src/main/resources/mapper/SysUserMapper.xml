@@ -234,6 +234,11 @@
 		</if>
 	</update>
 	
+	<update id="updatePassword" parameterType="map">
+		update sys_user set 'password' = #{newPassword,jdbcType=VARCHAR}
+			where user_id = #{userId,jdbcType=BIGINT} and password = #{password,jdbcType=VARCHAR}
+	</update>
+	
 	<delete id="deleteBatch">
 		delete from sys_user where user_id in 
 		<foreach item="userId" collection="array" open="(" separator="," close=")">

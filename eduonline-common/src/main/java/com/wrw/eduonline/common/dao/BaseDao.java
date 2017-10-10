@@ -7,7 +7,7 @@ import java.util.Map;
  * @author wrw
  * dao基础类
  */
-public interface BaseDao<T> {
+public abstract interface BaseDao<T> {
 	
 	int deleteByPrimaryKey(Long Id);
 
