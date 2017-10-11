@@ -9,7 +9,8 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:spring-application.xml
+			classpath:spring-mvc.xml
+			classpath:spring-jdbc.xml
 			classpath*:eduonline-*.xml
 		</param-value>
 	</context-param>
