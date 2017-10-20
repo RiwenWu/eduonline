@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wrw.eduonline.shiro.dao.SysUserDao">
-	<resultMap id="BaseResultMap" type="com.wrw.eduonline.shiro.entity.SysUserEntity">
+<mapper namespace="com.wrw.eduonline.dao.SysUserDao">
+	<resultMap id="BaseResultMap" type="com.wrw.eduonline.entity.SysUserEntity">
 		<id column="user_id" property="userId" jdbcType="BIGINT" />
 		<result column="username" property="username" jdbcType="VARCHAR" />
 		<result column="password" property="password" jdbcType="VARCHAR" />
@@ -30,7 +30,7 @@
 		delete from sys_user
 		where user_id = #{userId,jdbcType=BIGINT}
 	</delete>
-	<insert id="insert" parameterType="com.wrw.eduonline.shiro.entity.SysUserEntity">
+	<insert id="insert" parameterType="com.wrw.eduonline.entity.SysUserEntity">
 		insert into sys_user (user_id, username, password,
 		email, mobile, status,
 		create_user_id, create_time, modified_time
@@ -42,7 +42,7 @@
 		#{modifiedTime,jdbcType=TIMESTAMP}
 		)
 	</insert>
-	<insert id="insertSelective" parameterType="com.wrw.eduonline.shiro.entity.SysUserEntity">
+	<insert id="insertSelective" parameterType="com.wrw.eduonline.entity.SysUserEntity">
 		insert into sys_user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="userId != null">
@@ -103,7 +103,7 @@
 			</if>
 		</trim>
 	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="com.wrw.eduonline.shiro.entity.SysUserEntity">
+	<update id="updateByPrimaryKeySelective" parameterType="com.wrw.eduonline.entity.SysUserEntity">
 		update sys_user
 		<set>
 			<if test="username != null">
@@ -130,7 +130,7 @@
 		</set>
 		where user_id = #{userId,jdbcType=BIGINT}
 	</update>
-	<update id="updateByPrimaryKey" parameterType="com.wrw.eduonline.shiro.entity.SysUserEntity">
+	<update id="updateByPrimaryKey" parameterType="com.wrw.eduonline.entity.SysUserEntity">
 		update sys_user
 		set username = #{username,jdbcType=VARCHAR},
 		password = #{password,jdbcType=VARCHAR},
@@ -144,7 +144,7 @@
 	</update>
 
 	<!-- 以下BaseDao的 -->
-	<insert id="save" parameterType="com.wrw.eduonline.shiro.entity.SysUserEntity">
+	<insert id="save" parameterType="com.wrw.eduonline.entity.SysUserEntity">
 		insert into sys_user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="userId != null">
@@ -206,7 +206,7 @@
 		</trim>
 	</insert>
 
-	<update id="update" parameterType="com.wrw.eduonline.shiro.entity.SysUserEntity">
+	<update id="update" parameterType="com.wrw.eduonline.entity.SysUserEntity">
 		update sys_user
 		<set>
 			<if test="username != null">
@@ -235,7 +235,7 @@
 	</update>
 	
 	<update id="updatePassword" parameterType="map">
-		update sys_user set 'password' = #{newPassword,jdbcType=VARCHAR}
+		update sys_user set password = #{newPassword,jdbcType=VARCHAR}
 			where user_id = #{userId,jdbcType=BIGINT} and password = #{password,jdbcType=VARCHAR}
 	</update>
 	
@@ -313,7 +313,7 @@
 		where ur.user_id = #{userId}
 	</select>
 	
-	<select id="queryByUserName" resultMap="BaseResultMap">
+	<select id="queryByUserName" parameterType="com.wrw.eduonline.entity.SysUserEntity" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" /> 
 		from sys_user 

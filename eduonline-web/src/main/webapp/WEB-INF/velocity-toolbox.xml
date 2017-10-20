@@ -4,6 +4,6 @@
 	<tool>
 	    <key>shiro</key>
 	    <scope>application</scope>
-	    <class>com.wrw.eduonline.shiro.shiro.VelocityShiro</class>
+	    <class>com.wrw.eduonline.shiro.VelocityShiro</class>
 	</tool>
 </toolbox>

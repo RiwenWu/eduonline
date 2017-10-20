@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wrw.eduonline.shiro.dao.SysRoleDao">
-	<resultMap id="BaseResultMap" type="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+<mapper namespace="com.wrw.eduonline.dao.SysRoleDao">
+	<resultMap id="BaseResultMap" type="com.wrw.eduonline.entity.SysRoleEntity">
 		<id column="role_id" property="roleId" jdbcType="BIGINT" />
 		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
 		<result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -25,7 +25,7 @@
 		delete from sys_role
 		where role_id = #{roleId,jdbcType=BIGINT}
 	</delete>
-	<insert id="insert" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+	<insert id="insert" parameterType="com.wrw.eduonline.entity.SysRoleEntity">
 		insert into sys_role (role_id, role_name, remark,
 		create_user_id, create_time, modified_time
 		)
@@ -34,7 +34,7 @@
 		#{createUserId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP}
 		)
 	</insert>
-	<insert id="insertSelective" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+	<insert id="insertSelective" parameterType="com.wrw.eduonline.entity.SysRoleEntity">
 		insert into sys_role
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="roleId != null">
@@ -77,7 +77,7 @@
 			</if>
 		</trim>
 	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+	<update id="updateByPrimaryKeySelective" parameterType="com.wrw.eduonline.entity.SysRoleEntity">
 		update sys_role
 		<set>
 			<if test="roleName != null">
@@ -98,7 +98,7 @@
 		</set>
 		where role_id = #{roleId,jdbcType=BIGINT}
 	</update>
-	<update id="updateByPrimaryKey" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+	<update id="updateByPrimaryKey" parameterType="com.wrw.eduonline.entity.SysRoleEntity">
 		update sys_role
 		set role_name = #{roleName,jdbcType=VARCHAR},
 		remark = #{remark,jdbcType=VARCHAR},
@@ -109,7 +109,7 @@
 	</update>
 
 	<!-- BaseDao定义的 -->
-	<insert id="save" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+	<insert id="save" parameterType="com.wrw.eduonline.entity.SysRoleEntity">
 		insert into sys_role
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="roleId != null">
@@ -153,7 +153,7 @@
 		</trim>
 	</insert>
 
-	<update id="update" parameterType="com.wrw.eduonline.shiro.entity.SysRoleEntity">
+	<update id="update" parameterType="com.wrw.eduonline.entity.SysRoleEntity">
 		update sys_role
 		<set>
 			<if test="roleName != null">

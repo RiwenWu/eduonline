@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wrw.eduonline.shiro.dao.SysUserRoleDao">
+<mapper namespace="com.wrw.eduonline.dao.SysUserRoleDao">
 	<resultMap id="BaseResultMap"
-		type="com.wrw.eduonline.shiro.entity.SysUserRoleEntity">
+		type="com.wrw.eduonline.entity.SysUserRoleEntity">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="user_id" property="userId" jdbcType="BIGINT" />
 		<result column="role_id" property="roleId" jdbcType="BIGINT" />
@@ -21,14 +21,14 @@
 		delete from sys_user_role
 		where id = #{id,jdbcType=BIGINT}
 	</delete>
-	<insert id="insert" parameterType="com.wrw.eduonline.shiro.entity.SysUserRoleEntity">
+	<insert id="insert" parameterType="com.wrw.eduonline.entity.SysUserRoleEntity">
 		insert into sys_user_role (id, user_id, role_id
 		)
 		values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
 		#{roleId,jdbcType=BIGINT}
 		)
 	</insert>
-	<insert id="insertSelective" parameterType="com.wrw.eduonline.shiro.entity.SysUserRoleEntity">
+	<insert id="insertSelective" parameterType="com.wrw.eduonline.entity.SysUserRoleEntity">
 		insert into sys_user_role
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -53,7 +53,7 @@
 			</if>
 		</trim>
 	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="com.wrw.eduonline.shiro.entity.SysUserRoleEntity">
+	<update id="updateByPrimaryKeySelective" parameterType="com.wrw.eduonline.entity.SysUserRoleEntity">
 		update sys_user_role
 		<set>
 			<if test="userId != null">
@@ -65,7 +65,7 @@
 		</set>
 		where id = #{id,jdbcType=BIGINT}
 	</update>
-	<update id="updateByPrimaryKey" parameterType="com.wrw.eduonline.shiro.entity.SysUserRoleEntity">
+	<update id="updateByPrimaryKey" parameterType="com.wrw.eduonline.entity.SysUserRoleEntity">
 		update sys_user_role
 		set user_id = #{userId,jdbcType=BIGINT},
 		role_id = #{roleId,jdbcType=BIGINT}

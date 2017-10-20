@@ -16,7 +16,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.wrw.eduonline.shiro.entity.SysUserEntity;
+import com.wrw.eduonlin.service.SysUserService;
+import com.wrw.eduonline.entity.SysUserEntity;
 
 /**   
  *    
@@ -54,8 +55,8 @@ public class SysUserServiceTest {
 	public void queryAllMenuIdTest() {
 		List<Long> userMenu = new ArrayList<Long>();
 		userMenu = sysUserService.queryAllMenuId((long)1);
-		for (Long L1 : userMenu) {
-			System.out.println(L1);
+		for (Long long1 : userMenu) {
+			System.out.println(long1);
 		}
 	}
 	
@@ -65,7 +66,7 @@ public class SysUserServiceTest {
 	@Test
 	public void queryByUserNameTest() {
 		SysUserEntity user = new SysUserEntity();
-		user = sysUserService.queryByUserName("admin");
+		user = sysUserService.queryByUserName("wrw");
 		Assert.assertNotNull(user);
 		System.out.println(user.toString());
 	}
@@ -157,6 +158,15 @@ public class SysUserServiceTest {
 	public void deleteBatchTest() {
 		Long[] ids = {(long) 17}; 
 		sysUserService.deleteBatch(ids);
+	}
+	
+	/**
+	 * 修改密码
+	 */
+	@Test
+	public void updatePasswordTest() {
+		int count = sysUserService.updatePassword((long)3, "123456", "456123");
+		Assert.assertNotEquals(0, count);
 	}
 	
 }

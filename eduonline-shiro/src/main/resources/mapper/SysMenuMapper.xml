@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wrw.eduonline.shiro.dao.SysMenuDao" >
-  <resultMap id="BaseResultMap" type="com.wrw.eduonline.shiro.entity.SysMenuEntity" >
+<mapper namespace="com.wrw.eduonline.dao.SysMenuDao" >
+  <resultMap id="BaseResultMap" type="com.wrw.eduonline.entity.SysMenuEntity" >
     <id column="menu_id" property="menuId" jdbcType="BIGINT" />
     <result column="parent_id" property="parentId" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -26,7 +26,7 @@
     delete from sys_menu
     where menu_id = #{menuId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.wrw.eduonline.shiro.entity.SysMenuEntity" >
+  <insert id="insert" parameterType="com.wrw.eduonline.entity.SysMenuEntity" >
     insert into sys_menu (menu_id, parent_id, name, 
       url, perms, type, icon, 
       order_num, create_time, modified_time
@@ -36,7 +36,7 @@
       #{orderNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.wrw.eduonline.shiro.entity.SysMenuEntity" >
+  <insert id="insertSelective" parameterType="com.wrw.eduonline.entity.SysMenuEntity" >
     insert into sys_menu
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="menuId != null" >
@@ -103,7 +103,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wrw.eduonline.shiro.entity.SysMenuEntity" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.wrw.eduonline.entity.SysMenuEntity" >
     update sys_menu
     <set >
       <if test="parentId != null" >
@@ -136,7 +136,7 @@
     </set>
     where menu_id = #{menuId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wrw.eduonline.shiro.entity.SysMenuEntity" >
+  <update id="updateByPrimaryKey" parameterType="com.wrw.eduonline.entity.SysMenuEntity" >
     update sys_menu
     set parent_id = #{parentId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
@@ -151,7 +151,7 @@
   </update>
   
   <!-- BaseDao定义 -->
-  <insert id="save" parameterType="com.wrw.eduonline.shiro.entity.SysMenuEntity" >
+  <insert id="save" parameterType="com.wrw.eduonline.entity.SysMenuEntity" >
     insert into sys_menu
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="menuId != null" >
@@ -219,7 +219,7 @@
     </trim>
   </insert>
   
-  <update id="update" parameterType="com.wrw.eduonline.shiro.entity.SysMenuEntity" >
+  <update id="update" parameterType="com.wrw.eduonline.entity.SysMenuEntity" >
     update sys_menu
     set parent_id = #{parentId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},

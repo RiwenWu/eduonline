@@ -6,11 +6,11 @@
         http://www.springframework.org/schema/beans 
         http://www.springframework.org/schema/beans/spring-beans-4.2.xsd        
         http://www.springframework.org/schema/context 
-        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/context/spring-context.xsd
      	http://www.springframework.org/schema/aop 
-     	http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+     	http://www.springframework.org/schema/aop/spring-aop.xsd
 		http://www.springframework.org/schema/mvc 
-     	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+     	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<context:component-scan base-package="com.wrw.eduonline" />
 	<context:annotation-config />
@@ -44,7 +44,7 @@
 		class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
 		<property name="contentType" value="text/html;charset=UTF-8" />
 		<property name="viewNames" value="*.html" />
-		<property name="suffix" value="" />
+        <property name="suffix" value=""/>
 		<property name="dateToolAttribute" value="date" />
 		<property name="numberToolAttribute" value="number" />
 		<property name="toolboxConfigLocation" value="/WEB-INF/velocity-toolbox.xml" />
@@ -89,7 +89,7 @@
 
 	<bean
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-		<property name="templateLoaderPath" value="/WEB-INF/page/" />
+		<property name="templateLoaderPath" value="WEB-INF/page/" />
 	</bean>
 
 	<bean id="multipartResolver"

@@ -59,8 +59,8 @@
 	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
 		<property name="patterns">
 			<list>
-				<value>com.wrw.eduonline.*.controller.*</value>
-				<value>com.wrw.eduonline.*.service.*</value>
+				<value>com.wrw.eduonline.controller.*</value>
+				<value>com.wrw.eduonline.service.*</value>
 			</list>
 		</property>
 	</bean>
@@ -77,10 +77,11 @@
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="configLocation" value="classpath:spring-mybatis.xml" />
+		<property name="mapperLocations" value="classpath:mapper/*.xml" />
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.wrw.eduonline.*.dao" />
+		<property name="basePackage" value="com.wrw.eduonline.dao" />
 	</bean>
 </beans>

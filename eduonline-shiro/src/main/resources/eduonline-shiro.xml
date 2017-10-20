@@ -6,7 +6,7 @@
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
 	<!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的UserRealm.java -->  
-	<bean id="userRealm" class="com.wrw.eduonline.shiro.shiro.UserRealm"/>
+	<bean id="userRealm" class="com.wrw.eduonline.shiro.UserRealm"/>
 
 	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
 		<!-- 设置session过期时间为1小时(单位：毫秒)，默认为30分钟 -->
