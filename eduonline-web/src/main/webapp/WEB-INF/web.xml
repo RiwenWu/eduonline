@@ -9,6 +9,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
+			classpath:spring-mvc.xml
 			classpath:spring-jdbc.xml
 			classpath*:eduonline-*.xml
 		</param-value>
@@ -89,7 +90,7 @@
     
 	<servlet-mapping>
 		<servlet-name>springmvc</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
 	<!-- 打开Druid的监控统计功能 -->

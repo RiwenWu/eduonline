@@ -30,7 +30,7 @@ import com.wrw.eduonline.utils.Constant;
 
 /**   
  *    
- * 项目名称：eduonline-shiro   
+ * 项目名称：eduonline-shiro
  * 类名称：UserRealm   
  * 类描述：登陆认证
  * 创建人：wrw   
