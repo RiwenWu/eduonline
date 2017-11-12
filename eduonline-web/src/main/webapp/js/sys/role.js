@@ -149,7 +149,7 @@ var vm = new Vue({
 		getMenuTree: function(roleId) {
 			//加载菜单树
 			$.get("../sys/menu/perms", function(r){
-				ztree = $.fn.zTree.init($("#menuTree"), setting, r.menuList);
+				ztree = $.fn.zTree.init($("#menuTree"), setting, r.menulist);
 				//展开所有节点
 				ztree.expandAll(true);
 				

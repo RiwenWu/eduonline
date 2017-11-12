@@ -81,6 +81,7 @@ public class SysUserServiceImpl implements SysUserService {
 		//检查角色是否越权
 		checkRole(user);
 		
+		System.out.println(user.getUserId());
 		//保存用户与角色关系
 		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
 	}

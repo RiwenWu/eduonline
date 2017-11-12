@@ -95,6 +95,20 @@ public class SysMenuServiceTest {
 		for (SysMenuEntity menu : menuList) {
 			System.out.println(menu.toString());
 		}
+		System.out.println(menuList.size());
+	}
+	
+	/**
+	 * 查询菜单列表
+	 */
+	@Test
+	public void queryListTest1() {
+		List<SysMenuEntity> menuList = new ArrayList<SysMenuEntity>();
+		menuList = sysMenuService.queryList(new HashMap<String, Object>());
+		for (SysMenuEntity menu : menuList) {
+			System.out.println(menu.toString());
+		}
+		System.out.println(menuList.size());
 	}
 	
 	/**

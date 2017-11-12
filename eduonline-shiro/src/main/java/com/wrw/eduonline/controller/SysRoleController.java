@@ -1,6 +1,7 @@
 package com.wrw.eduonline.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +61,20 @@ public class SysRoleController extends AbstractController{
 		PageUtils pageUtil = new PageUtils(list, total, query.getLimit(), query.getPage());
 		
 		return R.ok().put("page", pageUtil);
+	}
+	
+	@RequestMapping("/select")
+	@RequiresPermissions("sys:role:select")
+	public R select() {
+		Map<String, Object> map = new HashMap<>();
+		
+		//如果不是超级管理员，则只查询自己所拥有的角色列表
+		if (getUserId() != Constant.SUPER_ADMIN) {
+			map.put("createUserId", getUserId());
+		}
+		List<SysRoleEntity> list = sysRoleService.queryList(map);
+		
+		return R.ok().put("list", list);
 	}
 	
 	/**

@@ -127,6 +127,21 @@ public class SysMenuController extends AbstractController{
 	}
 	
 	/**
+	 * 修改
+	 */
+	@SysLog("修改菜单")
+	@RequestMapping("/update")
+	@RequiresPermissions("sys:menu:update")
+	public R update(@RequestBody SysMenuEntity menu){
+		//数据校验
+		verifyForm(menu);
+				
+		sysMenuService.update(menu);
+		
+		return R.ok();
+	}
+	
+	/**
 	 * 删除
 	 */
 	@SysLog("删除菜单")
@@ -138,6 +153,8 @@ public class SysMenuController extends AbstractController{
 				return R.error("系统菜单，不能删除");
 			}
 		}
+		sysMenuService.deleteBatch(menuIds);
+		
 		return R.ok();
 	}
 	
@@ -174,7 +191,7 @@ public class SysMenuController extends AbstractController{
 		//上级菜单类型
 		int parentType = MenuType.CATALOG.getValue();
 		if (menu.getParentId() != 0) {
-			SysMenuEntity parentMenu = sysMenuService.queryObject(menu.getMenuId());
+			SysMenuEntity parentMenu = sysMenuService.queryObject(menu.getParentId());
 			parentType = parentMenu.getType();
 		}
 		

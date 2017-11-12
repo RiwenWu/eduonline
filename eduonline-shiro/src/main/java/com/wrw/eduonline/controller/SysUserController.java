@@ -25,6 +25,7 @@ import com.wrw.eduonline.utils.ShiroUtils;
 import com.wrw.eduonline.validator.Assert;
 import com.wrw.eduonline.validator.ValidatorUtils;
 import com.wrw.eduonline.validator.group.AddGroup;
+import com.wrw.eduonline.validator.group.UpdateGroup;
 
 /**   
  *    
@@ -123,6 +124,22 @@ public class SysUserController extends AbstractController {
 	public R save(@RequestBody SysUserEntity user) {
 		ValidatorUtils.validateEntity(user, AddGroup.class);
 		
+		//System.out.println(user.getUserId());
+		user.setCreateUserId(getUserId());
+		sysUserService.save(user);
+		
+		return R.ok();
+	}
+	
+	/**
+	 * 修改用户
+	 */
+	@SysLog("修改用户")
+	@RequestMapping("/update")
+	@RequiresPermissions("sys:user:update")
+	public R update(@RequestBody SysUserEntity user){
+		ValidatorUtils.validateEntity(user, UpdateGroup.class);
+		
 		user.setCreateUserId(getUserId());
 		sysUserService.update(user);
 		
@@ -130,7 +147,7 @@ public class SysUserController extends AbstractController {
 	}
 	
 	/**
-	 * 修改用户
+	 * 删除用户
 	 */
 	@SysLog("删除用户")
 	@RequestMapping("/delete")

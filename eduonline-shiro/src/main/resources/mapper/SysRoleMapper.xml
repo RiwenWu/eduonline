@@ -109,7 +109,7 @@
 	</update>
 
 	<!-- BaseDao定义的 -->
-	<insert id="save" parameterType="com.wrw.eduonline.entity.SysRoleEntity">
+	<insert id="save" parameterType="com.wrw.eduonline.entity.SysRoleEntity" useGeneratedKeys="true" keyProperty="roleId">
 		insert into sys_role
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="roleId != null">

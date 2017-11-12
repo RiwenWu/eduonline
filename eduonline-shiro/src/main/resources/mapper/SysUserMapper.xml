@@ -144,7 +144,7 @@
 	</update>
 
 	<!-- 以下BaseDao的 -->
-	<insert id="save" parameterType="com.wrw.eduonline.entity.SysUserEntity">
+	<insert id="save" parameterType="com.wrw.eduonline.entity.SysUserEntity" useGeneratedKeys="true" keyProperty="userId">
 		insert into sys_user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="userId != null">
