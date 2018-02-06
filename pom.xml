@@ -318,5 +318,6 @@
 		<module>eduonline-shiro</module>
 		<module>eduonline-web</module>
 		<module>eduonline-api</module>
+		<module>eduonline-app</module>
 	</modules>
 </project>

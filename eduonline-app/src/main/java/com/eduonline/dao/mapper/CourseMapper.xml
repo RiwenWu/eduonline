@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eduonline.dao.CourseMapper" >
+  <resultMap id="BaseResultMap" type="com.eduonline.model.Course" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="introduce" property="introduce" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="modify_time" property="modifyTime" jdbcType="DATE" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="free_state" property="freeState" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, introduce, create_time, modify_time, pic_url, free_state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from us_course
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from us_course
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.eduonline.model.Course" >
+    insert into us_course (id, name, introduce, 
+      create_time, modify_time, pic_url, 
+      free_state)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=DATE}, #{modifyTime,jdbcType=DATE}, #{picUrl,jdbcType=VARCHAR}, 
+      #{freeState,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eduonline.model.Course" >
+    insert into us_course
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="introduce != null" >
+        introduce,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+      <if test="freeState != null" >
+        free_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=DATE},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="freeState != null" >
+        #{freeState,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eduonline.model.Course" >
+    update us_course
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        introduce = #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=DATE},
+      </if>
+      <if test="picUrl != null" >
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="freeState != null" >
+        free_state = #{freeState,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eduonline.model.Course" >
+    update us_course
+    set name = #{name,jdbcType=VARCHAR},
+      introduce = #{introduce,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE},
+      modify_time = #{modifyTime,jdbcType=DATE},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      free_state = #{freeState,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
