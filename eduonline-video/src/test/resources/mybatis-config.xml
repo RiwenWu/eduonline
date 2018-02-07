@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <settings>
+		<!-- 是否使用缓存 -->
+		<setting name="cacheEnabled" value="true"/>
+		<!-- 操作时间30秒 -->
+		<setting name="defaultStatementTimeout" value="30000"/>
+		<!-- 
+			允许 JDBC 支持自动生成主键，需要驱动兼容。
+			 如果设置为 true 则这个设置强制使用自动生成主键，
+			 尽管一些驱动不能兼容但仍可正常工作（比如 Derby）
+		 -->
+		<setting name="useGeneratedKeys" value="true"/>
+		<!-- 
+			是否开启自动驼峰命名规则（camel case）映射，
+			即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 的类似映射
+		 -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<!-- 使用延时加载 -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<!-- 使用代理 -->
+		<setting name="proxyFactory" value="CGLIB"/>
+	</settings>
+</configuration>

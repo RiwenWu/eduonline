@@ -26,6 +26,11 @@
             <artifactId>eduonline-api</artifactId>
             <version>${eduonline-version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.wrw.eduonline</groupId>
+            <artifactId>eduonline-video</artifactId>
+            <version>${eduonline-version}</version>
+        </dependency>
     </dependencies>
 	<build>
 		<finalName>eduonline-web</finalName>

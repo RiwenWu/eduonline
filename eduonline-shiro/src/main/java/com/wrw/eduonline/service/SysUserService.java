@@ -1,4 +1,4 @@
-package com.wrw.eduonlin.service;
+package com.wrw.eduonline.service;
 
 import java.util.List;
 import java.util.Map;

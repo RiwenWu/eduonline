@@ -319,5 +319,6 @@
 		<module>eduonline-web</module>
 		<module>eduonline-api</module>
 		<module>eduonline-app</module>
+		<module>eduonline-video</module>
 	</modules>
 </project>

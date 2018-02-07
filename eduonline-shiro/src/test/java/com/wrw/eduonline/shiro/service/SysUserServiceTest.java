@@ -16,8 +16,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.wrw.eduonlin.service.SysUserService;
 import com.wrw.eduonline.entity.SysUserEntity;
+import com.wrw.eduonline.service.SysUserService;
 
 /**   
  *    

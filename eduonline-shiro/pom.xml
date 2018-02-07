@@ -10,12 +10,12 @@
   <description>权限模块</description>
   
   <dependencies>
-		<dependency>
-			<groupId>com.wrw.eduonline</groupId>
-			<artifactId>eduonline-common</artifactId>
-			<version>${eduonline-version}</version>
-		</dependency>
-	</dependencies>
+	<dependency>
+		<groupId>com.wrw.eduonline</groupId>
+		<artifactId>eduonline-common</artifactId>
+		<version>${eduonline-version}</version>
+	</dependency>
+  </dependencies>
 	
 	<build>
 		<plugins>
