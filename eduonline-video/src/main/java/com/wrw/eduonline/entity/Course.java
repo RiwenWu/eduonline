@@ -17,6 +17,8 @@ public class Course {
 
     private String freeState;
 
+    private Long coverId;
+
     public Long getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class Course {
 
     public void setFreeState(String freeState) {
         this.freeState = freeState == null ? null : freeState.trim();
+    }
+
+    public Long getCoverId() {
+        return coverId;
+    }
+
+    public void setCoverId(Long coverId) {
+        this.coverId = coverId;
     }
 }

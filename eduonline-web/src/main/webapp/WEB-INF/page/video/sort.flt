@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>课程分类</title>
+    <#include "header.flt">
+</head>
+
+<body>
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="searchValue" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+    </div>
+    <form class="layui-form" action="">
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <select name="modules" lay-verify="required" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    <option value="1">layer</option>
+                    <option value="2">form</option>
+                    <option value="3">layim</option>
+                    <option value="4">element</option>
+                </select>
+            </div>
+        </div>
+    </form>
+    <div class="layui-inline">
+        <div class="layui-btn-group demoTable">
+            <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
+            <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
+            <button class="layui-btn" data-type="isAll">验证是否全选</button>
+        </div>
+    </div>
+    <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+</body>
+<script>
+layui.use(['form', 'table'], function() {
+    var form = layui.form,
+        layer = layui.layer,
+        table = layui.table;
+
+
+    //监听提交
+    form.on('submit(demo1)', function(data) {
+        layer.alert(JSON.stringify(data.field), {
+            title: '最终的提交信息'
+        })
+        return false;
+    });
+
+    //方法级渲染
+    table.render({
+        elem: '#LAY_table_user',
+        url: '../video/sort/list',
+        cols: [
+            [
+                { checkbox: true, fixed: true }, { field: 'type', title: '类型', width: 120, sort: true, fixed: true }, { field: 'name', title: '分类名称', width: 160 }, { field: 'firstMenuName', title: '一级分类名称', width: 160, sort: true }, { field: 'secondMenuName', title: '二级分类名称', width: 160 }
+            ]
+        ],
+        id: 'testReload',
+        page: true,
+        height: 315
+    });
+
+    var $ = layui.$,
+        active = {
+        	reload: function() {
+                var $demoReload = $('#demoReload').val();
+
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    },
+                    where: {
+                    	searchValue: $demoReload
+                    }
+                });
+            },
+            getCheckData: function() { //获取选中数据
+                var checkStatus = table.checkStatus('testReload'),
+                    data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            },
+            getCheckLength: function() { //获取选中数目
+                var checkStatus = table.checkStatus('testReload'),
+                    data = checkStatus.data;
+                layer.msg('选中了：' + data.length + ' 个');
+            },
+            isAll: function() { //验证是否全选
+                var checkStatus = table.checkStatus('testReload');
+                layer.msg(checkStatus.isAll ? '全选' : '未全选')
+            }
+        };
+
+	    $('.demoTable .layui-btn').on('click', function() {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    });
+
+});
+</script>
+
+</html>

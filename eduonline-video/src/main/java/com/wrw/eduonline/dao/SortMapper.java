@@ -2,6 +2,8 @@ package com.wrw.eduonline.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.wrw.eduonline.entity.Sort;
 
 public interface SortMapper {

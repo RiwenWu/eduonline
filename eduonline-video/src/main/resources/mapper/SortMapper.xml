@@ -109,5 +109,13 @@
 	select 
     <include refid="Base_Column_List" />
     from us_sort
+    <!-- <where>
+		<if test="searchValue != null ">
+		 and NAME like concat(concat('%',#{searchValue,jdbcType=VARCHAR}),'%') 
+		</if>
+		<if test="type != null">
+		 and TYPE like concat(concat('%',#{type,jdbcType=VARCHAR}),'%')
+		</if>
+	</where> -->
   </select>
 </mapper>

@@ -9,9 +9,10 @@
     <result column="modify_time" property="modifyTime" jdbcType="DATE" />
     <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
     <result column="free_state" property="freeState" jdbcType="VARCHAR" />
+    <result column="cover_id" property="coverId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, introduce, create_time, modify_time, pic_url, free_state
+    id, name, introduce, create_time, modify_time, pic_url, free_state, cover_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -26,10 +27,10 @@
   <insert id="insert" parameterType="com.wrw.eduonline.entity.Course" >
     insert into us_course (id, name, introduce, 
       create_time, modify_time, pic_url, 
-      free_state)
+      free_state, cover_id)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=DATE}, #{modifyTime,jdbcType=DATE}, #{picUrl,jdbcType=VARCHAR}, 
-      #{freeState,jdbcType=VARCHAR})
+      #{freeState,jdbcType=VARCHAR}, #{coverId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.wrw.eduonline.entity.Course" >
     insert into us_course
@@ -55,6 +56,9 @@
       <if test="freeState != null" >
         free_state,
       </if>
+      <if test="coverId != null" >
+        cover_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -77,6 +81,9 @@
       </if>
       <if test="freeState != null" >
         #{freeState,jdbcType=VARCHAR},
+      </if>
+      <if test="coverId != null" >
+        #{coverId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -101,6 +108,9 @@
       <if test="freeState != null" >
         free_state = #{freeState,jdbcType=VARCHAR},
       </if>
+      <if test="coverId != null" >
+        cover_id = #{coverId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -111,7 +121,8 @@
       create_time = #{createTime,jdbcType=DATE},
       modify_time = #{modifyTime,jdbcType=DATE},
       pic_url = #{picUrl,jdbcType=VARCHAR},
-      free_state = #{freeState,jdbcType=VARCHAR}
+      free_state = #{freeState,jdbcType=VARCHAR},
+      cover_id = #{coverId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

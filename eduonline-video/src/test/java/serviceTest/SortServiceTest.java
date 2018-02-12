@@ -1,9 +1,7 @@
 package serviceTest;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,7 +11,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.wrw.eduonline.entity.Sort;
+import com.wrw.eduonline.entity.dto.SortDTO;
 import com.wrw.eduonline.service.SortService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,8 +24,9 @@ public class SortServiceTest {
 	
 	@Test
 	public void queryAllTest() throws Exception {
-		List<Sort> sortList = new ArrayList();
-		sortList = sortService.queryAll();
+		List<SortDTO> sortDTOList = new ArrayList();
+		sortDTOList = sortService.queryAll("个人", null);
+		/*
 		Map<Long, String> yijicaidan= new HashMap<Long, String>();
 		Map<Long, String> erjicaidan= new HashMap<Long, String>();
 		for(Sort sort : sortList) {
@@ -42,6 +41,11 @@ public class SortServiceTest {
 			if (sort.getType().equals("2")) {
 				System.out.println("2-----------" + sort.getName() + erjicaidan.get(sort.getParentId()));
 			}
+		}
+		*/
+		System.out.println(sortDTOList.size());
+		for(SortDTO sortDTO : sortDTOList) {
+			System.out.println(sortDTO.getType() + sortDTO.getName() + sortDTO.getSecondMenuName() + sortDTO.getFirstMenuName());
 		}
 	}
 }
