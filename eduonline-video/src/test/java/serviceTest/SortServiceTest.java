@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.wrw.eduonline.entity.Sort;
 import com.wrw.eduonline.entity.dto.SortDTO;
 import com.wrw.eduonline.service.SortService;
 
@@ -25,7 +26,7 @@ public class SortServiceTest {
 	@Test
 	public void queryAllTest() throws Exception {
 		List<SortDTO> sortDTOList = new ArrayList();
-		sortDTOList = sortService.queryAll("个人", null);
+		sortDTOList = sortService.queryAll("", "0");
 		/*
 		Map<Long, String> yijicaidan= new HashMap<Long, String>();
 		Map<Long, String> erjicaidan= new HashMap<Long, String>();
@@ -46,6 +47,14 @@ public class SortServiceTest {
 		System.out.println(sortDTOList.size());
 		for(SortDTO sortDTO : sortDTOList) {
 			System.out.println(sortDTO.getType() + sortDTO.getName() + sortDTO.getSecondMenuName() + sortDTO.getFirstMenuName());
+		}
+	}
+	
+	@Test
+	public void querySortListByPIdTest() throws Exception {
+		List<Sort> sortList = sortService.querySortListByPId((long)1);
+		for (Sort sort : sortList) {
+			System.out.println(sort.getName() + sort.getParentId());
 		}
 	}
 }

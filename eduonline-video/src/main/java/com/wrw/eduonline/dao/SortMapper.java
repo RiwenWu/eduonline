@@ -20,4 +20,11 @@ public interface SortMapper {
     int updateByPrimaryKey(Sort record);
     
     List<Sort> queryAll();
+    
+    /**
+     * 根据PId获取分类列表
+     * @param PId
+     * @return
+     */
+    List<Sort> queryListByPId(long PId);
 }

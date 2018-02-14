@@ -84,4 +84,12 @@ public class SortServiceImpl implements SortService{
 		return temp_sortDTOList;
 	}
 
+	/**
+	 * 根据PId获取分类列表
+	 */
+	@Override
+	public List<Sort> querySortListByPId(long PId) throws Exception {
+		return sortMapper.queryListByPId(PId);
+	}
+
 }

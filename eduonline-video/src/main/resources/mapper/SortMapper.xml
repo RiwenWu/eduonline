@@ -118,4 +118,13 @@
 		</if>
 	</where> -->
   </select>
+  
+  <select id="queryListByPId" resultMap="BaseResultMap" >
+  	select 
+    	<include refid="Base_Column_List" />
+    from 
+    	us_sort
+    where
+    	parent_id = #{PId,jdbcType=BIGINT}
+  </select>
 </mapper>
