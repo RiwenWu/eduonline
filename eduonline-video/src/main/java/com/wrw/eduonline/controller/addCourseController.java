@@ -1,6 +1,7 @@
 package com.wrw.eduonline.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,23 +13,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.wrw.eduonline.entity.Course;
+import com.wrw.eduonline.entity.CourseVideo;
 import com.wrw.eduonline.entity.Course_Sort;
 import com.wrw.eduonline.entity.Cover;
 import com.wrw.eduonline.entity.Sort;
+import com.wrw.eduonline.entity.Video;
 import com.wrw.eduonline.entity.dto.SortDTO;
 import com.wrw.eduonline.service.CourseService;
 import com.wrw.eduonline.service.CourseSortService;
+import com.wrw.eduonline.service.CourseVideoService;
 import com.wrw.eduonline.service.CoverService;
 import com.wrw.eduonline.service.SortService;
+import com.wrw.eduonline.service.VideoService;
 
 @Controller
 @RequestMapping("/video/addCourse")
@@ -42,6 +45,10 @@ public class addCourseController {
 	private CoverService coverService;
 	@Autowired
 	private CourseSortService courseSortService;
+	@Autowired
+	private VideoService videoService;
+	@Autowired
+	private CourseVideoService courseVideoService;
 	
 	/**
 	 * 保存课程封面
@@ -51,8 +58,7 @@ public class addCourseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/cover_save.json", method = RequestMethod.POST)
-	public Map<String, Object> saveCover(HttpServletRequest request, Cover cover, BindingResult bindingResult, MultipartFile file,
-			RedirectAttributes redirectAttributes) throws Exception{
+	public Map<String, Object> saveCover(HttpServletRequest request, Cover cover, MultipartFile file) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		if(file != null && file.getOriginalFilename() != null && file.getOriginalFilename().length()>0){  
@@ -139,8 +145,9 @@ public class addCourseController {
 		
 		map.put("bool", false);
 		//判断是否上传封面
-		if (request.getSession().getAttribute("CoverId").equals(null)) {
+		if (request.getSession().getAttribute("CoverId")  == null || request.getSession().getAttribute("CoverId")  == "") {
 			map.put("msg", "请上传课程封面");
+			return map;
 		}
 		//从session中获取封面的Id
 		Long coverId = (Long) request.getSession().getAttribute("CoverId");
@@ -156,6 +163,8 @@ public class addCourseController {
 		try {
 			//course入库
 			courseService.insertSelective(course);
+			//course的Id放入session中
+			request.getSession().setAttribute("CourseId", course.getId());
 			//course_sort入库
 			cs.setCourseId(course.getId());
 			courseSortService.insertSelective(cs);
@@ -164,6 +173,93 @@ public class addCourseController {
 			e.printStackTrace();
 		}
 		
+		return map;
+	}
+	
+	/**
+	 * 保存视频
+	 * @param file
+	 * @return
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/video_save.json")
+	public Map<String, Object> videoSave(HttpServletRequest request, HttpServletResponse response, MultipartFile file) throws IllegalStateException, IOException{
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", 1);
+		Video video = new Video();
+		CourseVideo cv = new CourseVideo();
+		
+		//从session中获取course的Id
+   	 	Long courseId = (Long) request.getSession().getAttribute("CourseId");
+   	 	if (courseId.equals(null)) {
+   	 		return map;
+   	 	}
+		
+		if(file != null && file.getOriginalFilename() != null && file.getOriginalFilename().length()>0){  
+	         //图片服务器路径  
+	         String file_path = request.getSession().getServletContext().getRealPath("");
+	          //原始文件名  
+	         String originalFileName = file.getOriginalFilename();  
+	         //新文件名，添加原始文件名后缀  
+	         String oldFileName = originalFileName.substring(0, originalFileName.lastIndexOf("."));
+	         String newFileName = "statics/videos/" + UUID.randomUUID() + oldFileName;  
+	         //创建新文件，路径为：图片服务器路径+新文件名  
+	         File newFile = new File(file_path + newFileName);  
+	         //将内存中的数据写入磁盘  
+	         file.transferTo(newFile);  
+	         //将新文件名写入中  
+	         video.setPath(newFileName);
+	         video.setTitle(oldFileName);
+	         //存数据库
+	         try {
+	        	 //Video入库
+	        	 videoService.insertSelective(video);
+	        	 //video的Id放入session
+	        	 request.getSession().setAttribute("VideoId", video.getId());
+	        	 cv.setVideoId(video.getId());
+	        	 cv.setCourseId(courseId);
+	        	 //cv入库
+	        	 courseVideoService.insertSelective(cv);
+	        	 
+	        	 map.put("code", 0);
+	         } catch (Exception e) {
+	        	 e.printStackTrace();
+	         }
+	    } 
+		return map;
+	}
+	
+	/**
+	 * 设置章节名称
+	 * @param request
+	 * @param response
+	 * @param videoName
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/video_name_save.json")
+	public Map<String, Object> videoNameSave(HttpServletRequest request, HttpServletResponse response, String videoName) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("bool", false);
+		Video video = new Video();
+		
+		//从session中获取course的Id
+   	 	Long videoId = (Long) request.getSession().getAttribute("VideoId");
+   	 	if(videoId.equals(null)) {
+   	 		return map;
+   	 	}
+   	 	
+   	 	try {
+   	 		video.setId(videoId);
+   	 		video.setTitle(videoName);
+   	 		videoService.updateByPrimaryKeySelective(video);
+   	 		map.put("bool", true);
+   	 	} catch (Exception e) {
+   	 		e.printStackTrace();
+   	 	}
 		return map;
 	}
 }

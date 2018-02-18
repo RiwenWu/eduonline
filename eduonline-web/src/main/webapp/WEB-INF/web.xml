@@ -22,7 +22,7 @@
 	
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>webPath</param-value>
+		<param-value>eduonline-web</param-value>
 	</context-param>
 	
 	<listener>
