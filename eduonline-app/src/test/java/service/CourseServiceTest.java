@@ -1,6 +1,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,4 +38,13 @@ public class CourseServiceTest {
 	    }  
 	}
 	
+	@Test
+	public void queryCourseByIdTest() throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = courseService.queryCourseById(13L);
+		
+		for(String k : map.keySet()) {
+			System.out.println("key = " + k + ",value = " + map.get(k));
+		}
+	}
 }

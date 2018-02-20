@@ -139,4 +139,18 @@
 		order by course.create_time desc
 	limit #{start}, #{end};
   </select>
+  
+  <select id="queryCourseById" resultType="map" parameterType="java.lang.Long">
+  	select 
+		course.id,
+		course.name,
+		course.introduce,
+		course.free_state,
+		cover.picurl
+	from
+		us_course course left join us_cover cover 
+		on course.cover_id = cover.id
+	where
+		course.id = #{id,jdbcType=BIGINT};
+  </select>
 </mapper>
