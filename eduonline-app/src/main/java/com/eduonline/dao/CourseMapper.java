@@ -23,4 +23,6 @@ public interface CourseMapper {
     List<Map<String, Object>> queryCourseListByPage(@Param("start")Integer start, @Param("end")Integer end) throws Exception;
 
 	Map<String, Object> queryCourseById(Long id);
+	
+	Map<Object, Object> queryCourseByIds(Long courseId) throws Exception;
 }

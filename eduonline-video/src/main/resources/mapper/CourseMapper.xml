@@ -10,9 +10,10 @@
     <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
     <result column="free_state" property="freeState" jdbcType="VARCHAR" />
     <result column="cover_id" property="coverId" jdbcType="BIGINT" />
+    <result column="salary" property="salary" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, introduce, create_time, modify_time, pic_url, free_state, cover_id
+    id, name, introduce, create_time, modify_time, pic_url, free_state, cover_id, salary
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -27,10 +28,12 @@
   <insert id="insert" parameterType="com.wrw.eduonline.entity.Course" >
     insert into us_course (id, name, introduce, 
       create_time, modify_time, pic_url, 
-      free_state, cover_id)
+      free_state, cover_id, salary
+      )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=DATE}, #{modifyTime,jdbcType=DATE}, #{picUrl,jdbcType=VARCHAR}, 
-      #{freeState,jdbcType=VARCHAR}, #{coverId,jdbcType=BIGINT})
+      #{freeState,jdbcType=VARCHAR}, #{coverId,jdbcType=BIGINT}, #{salary,jdbcType=DECIMAL}
+      )
   </insert>
   <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.wrw.eduonline.entity.Course" >
     insert into us_course
@@ -59,6 +62,9 @@
       <if test="coverId != null" >
         cover_id,
       </if>
+      <if test="salary != null" >
+        salary,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -84,6 +90,9 @@
       </if>
       <if test="coverId != null" >
         #{coverId,jdbcType=BIGINT},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -111,6 +120,9 @@
       <if test="coverId != null" >
         cover_id = #{coverId,jdbcType=BIGINT},
       </if>
+      <if test="salary != null" >
+        salary = #{salary,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -122,7 +134,8 @@
       modify_time = #{modifyTime,jdbcType=DATE},
       pic_url = #{picUrl,jdbcType=VARCHAR},
       free_state = #{freeState,jdbcType=VARCHAR},
-      cover_id = #{coverId,jdbcType=BIGINT}
+      cover_id = #{coverId,jdbcType=BIGINT},
+      salary = #{salary,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

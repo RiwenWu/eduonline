@@ -10,9 +10,10 @@
     <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
     <result column="free_state" property="freeState" jdbcType="VARCHAR" />
     <result column="cover_id" property="coverId" jdbcType="BIGINT" />
+    <result column="salary" property="salary" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, introduce, create_time, modify_time, pic_url, free_state, cover_id
+    id, name, introduce, create_time, modify_time, pic_url, free_state, cover_id, salary
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -146,6 +147,7 @@
 		course.name,
 		course.introduce,
 		course.free_state,
+		course.salary,
 		cover.picurl
 	from
 		us_course course left join us_cover cover 
@@ -153,4 +155,19 @@
 	where
 		course.id = #{id,jdbcType=BIGINT};
   </select>
+  <select id="queryCourseByIds" resultType="map" parameterType="java.lang.Long">
+  	select 
+		course.id,
+		course.name,
+		course.introduce,
+		course.free_state,
+		course.salary,
+		cover.picurl
+	from
+		us_course course left join us_cover cover 
+		on course.cover_id = cover.id
+	where
+		course.id = #{id,jdbcType=BIGINT};
+  </select>
+  
 </mapper>

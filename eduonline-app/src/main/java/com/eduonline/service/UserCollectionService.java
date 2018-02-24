@@ -1,5 +1,8 @@
 package com.eduonline.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.eduonline.model.UserCollection;
 
 public interface UserCollectionService {
@@ -16,4 +19,6 @@ public interface UserCollectionService {
 	int insertSelective(UserCollection uc) throws Exception;
 	
 	int updateByPrimaryKeySelective(UserCollection uc) throws Exception;
+	
+	List<Map<String, Object>> queryCourseListByUserId(Long userId) throws Exception;
 }

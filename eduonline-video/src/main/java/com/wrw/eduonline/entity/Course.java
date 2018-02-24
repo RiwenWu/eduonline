@@ -1,5 +1,6 @@
 package com.wrw.eduonline.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Course {
@@ -18,6 +19,8 @@ public class Course {
     private String freeState;
 
     private Long coverId;
+
+    private BigDecimal salary;
 
     public Long getId() {
         return id;
@@ -81,5 +84,13 @@ public class Course {
 
     public void setCoverId(Long coverId) {
         this.coverId = coverId;
+    }
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
     }
 }

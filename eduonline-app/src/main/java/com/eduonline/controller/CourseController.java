@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eduonline.model.UserCollection;
-import com.eduonline.model.UserCourse;
+import com.eduonline.model.UserJoinPlan;
+import com.eduonline.model.Video;
 import com.eduonline.service.CourseService;
+import com.eduonline.service.CourseVideoService;
 import com.eduonline.service.UserCollectionService;
+import com.eduonline.service.UserJoinPlanService;
+import com.eduonline.service.VideoService;
 
 @Controller
 public class CourseController {
@@ -24,6 +28,12 @@ public class CourseController {
 	private CourseService courseService;
 	@Autowired
 	private UserCollectionService userCollectionService;
+	@Autowired
+	private UserJoinPlanService userJoinPlanService;
+	@Autowired
+	private CourseVideoService courseVideoService;
+	@Autowired
+	private VideoService videoService;
 
 	/**
 	 * 根据pageNo获取全部课程列表
@@ -85,7 +95,8 @@ public class CourseController {
 	}
 
 	/**
-	 * code 0 ：取消收藏 ，1： 收藏成功 
+	 * code 0 ：取消收藏 ，1： 收藏成功
+	 * 
 	 * @param userId
 	 * @param courseId
 	 * @param collection
@@ -100,7 +111,7 @@ public class CourseController {
 		// String转Long
 		Long uId = Long.parseLong(userId);
 		Long cId = Long.parseLong(courseId);
-		
+
 		UserCollection uc = new UserCollection();
 
 		try {
@@ -113,7 +124,7 @@ public class CourseController {
 				userCollectionService.insertSelective(temp_uc);
 				map.put("code", 1);
 				map.put("bool", true);
-			}else {
+			} else {
 				if (uc.getCollection() != collection) {
 					uc.setCollection(collection);
 					userCollectionService.updateByPrimaryKeySelective(uc);
@@ -130,20 +141,193 @@ public class CourseController {
 		}
 		return map;
 	}
-	
+
+	/**
+	 * 根据Ids获取收藏情况
+	 * 
+	 * @param userId
+	 * @param courseId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/queryUserCollectionByIds.json")
-	public Map<String, Object> queryUserCollectionByIds(String userId, String courseId){
-		
+	public Map<String, Object> queryUserCollectionByIds(String userId, String courseId) {
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		Long uId = Long.parseLong(userId);
 		Long cId = Long.parseLong(courseId);
 		map.put("bool", false);
-		
+
 		try {
 			UserCollection uc = userCollectionService.queryUserCouseByIds(uId, cId);
-			map.put("data", uc);
+			if (uc != null) {
+				map.put("data", uc);
+			}
 			map.put("bool", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+
+	/**
+	 * 根据Id获取收藏课程列表
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/queryCourseListByUserId.json")
+	public Map<String, Object> queryCourseListByUserId(String userId) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Map<String, Object>> courseList = new ArrayList<Map<String, Object>>();
+		map.put("bool", false);
+		Long uId = Long.parseLong(userId);
+
+		try {
+			courseList = userCollectionService.queryCourseListByUserId(uId);
+			map.put("data", courseList);
+			map.put("bool", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+
+	/**
+	 * 
+	 * @param userId
+	 * @param courseId
+	 * @param joinState
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/changeJoin.json")
+	public Map<String, Object> changeJoin(String userId, String courseId, String joinState) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("bool", false);
+		// String转Long
+		Long uId = Long.parseLong(userId);
+		Long cId = Long.parseLong(courseId);
+
+		UserJoinPlan ujp = new UserJoinPlan();
+
+		try {
+			ujp = userJoinPlanService.queryUJPByIds(uId, cId);
+			if (ujp == null) {
+				UserJoinPlan temp_ujp = new UserJoinPlan();
+				temp_ujp.setCourseId(cId);
+				temp_ujp.setUserId(uId);
+				temp_ujp.setJoinState("1");
+				userJoinPlanService.insertSelective(temp_ujp);
+				map.put("code", 1);
+				map.put("bool", true);
+			} else {
+				if (ujp.getJoinState() != joinState) {
+					ujp.setJoinState(joinState);
+					userJoinPlanService.updateByPrimaryKeySelective(ujp);
+				}
+				if (joinState.equals("0")) {
+					map.put("code", 0);
+				} else {
+					map.put("code", 1);
+				}
+			}
+			map.put("bool", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return map;
+	}
+	
+	/**
+	 * 根据Ids课程加入情况
+	 * 
+	 * @param userId
+	 * @param courseId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/queryUserJoinByIds.json")
+	public Map<String, Object> queryUserJoinByIds(String userId, String courseId) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		Long uId = Long.parseLong(userId);
+		Long cId = Long.parseLong(courseId);
+		map.put("bool", false);
+
+		try {
+			UserJoinPlan ujp = userJoinPlanService.queryUJPByIds(uId, cId);
+			if (ujp != null) {
+				map.put("data", ujp);
+			}
+			map.put("bool", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	/**
+	 * 根据userId获取加入课程列表
+	 * @param uId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "queryJoinCourseListById.json")
+	public Map<String, Object> queryJoinCourseListById(String userId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Long uId = Long.parseLong(userId);
+		map.put("bool", false);
+		
+		try {
+			List<Map<String, Object>> joinCourseList = userJoinPlanService.queryJoinListByuId(uId);
+			map.put("data", joinCourseList);
+			map.put("bool", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	/**
+	 * 根据courseId获取视频列表
+	 * @param courseId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "queryVideoListByCourseId.json")
+	public Map<String, Object> queryVideoListByCourseId(String courseId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Long cId = Long.parseLong(courseId);
+		map.put("bool", false);
+		try {
+			List<Video> videoList = courseVideoService.queryVideoListByCourseId(cId);
+			map.put("data", videoList);
+			map.put("bool", true);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	/**
+	 * 根据videoId获取video
+	 * @param courseId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "queryVideoById.json")
+	public Map<String, Object> queryVideoById(String videoId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("bool", false);
+		Long vId = Long.parseLong(videoId);
+		try {
+			Video video = videoService.selectByPrimaryKey(vId);
+			map.put("bool", true);
+			map.put("data", video);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

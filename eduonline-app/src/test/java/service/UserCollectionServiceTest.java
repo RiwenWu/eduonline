@@ -1,5 +1,9 @@
 package service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -23,5 +27,16 @@ public class UserCollectionServiceTest {
 	public void queryUserCouseByIdsTest() throws Exception {
 		UserCollection uc = userCollectionService.queryUserCouseByIds(13L, 13L);
 		
+	}
+	
+	@Test
+	public void queryCourseListByUserIdTest() throws Exception {
+		List<Map<String, Object>> courseList = new ArrayList<Map<String, Object>>();
+		courseList = userCollectionService.queryCourseListByUserId(13L);
+		for (Map<String, Object> map : courseList) {
+			for (String key : map.keySet()) {
+				System.out.println("key = " + key + " ,value = " + map.get(key));
+			}
+		}
 	}
 }

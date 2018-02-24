@@ -1,6 +1,8 @@
 package com.eduonline.service.impl;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,11 @@ public class UserCollectionServiceImpl implements UserCollectionService{
 	@Override
 	public int updateByPrimaryKeySelective(UserCollection uc) throws Exception {
 		return userCollectionMapper.updateByPrimaryKey(uc);
+	}
+
+	@Override
+	public List<Map<String, Object>> queryCourseListByUserId(Long userId) throws Exception {
+		return userCollectionMapper.queryCourseListByUserId(userId);
 	}
 
 }

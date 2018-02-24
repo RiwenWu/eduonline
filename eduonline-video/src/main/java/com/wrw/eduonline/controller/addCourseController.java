@@ -2,6 +2,7 @@ package com.wrw.eduonline.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -137,7 +138,7 @@ public class addCourseController {
 	@ResponseBody
 	@RequestMapping(value = "/addCourse.json")
 	public Map<String, Object> addCourse(HttpServletRequest request, HttpServletResponse response,
-			String courseName, String freeState, String courseIntroduce, long sortId) {
+			String courseName, String freeState, String courseIntroduce, long sortId, @RequestParam(value = "salary", required = false) String salary) {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		Course course = new Course();
@@ -157,6 +158,10 @@ public class addCourseController {
 		course.setFreeState(freeState);
 		course.setCoverId(coverId);
 		course.setIntroduce(courseIntroduce);
+		System.out.println(salary);
+		if (salary != null) {
+			course.setSalary(new BigDecimal(salary));
+		}
 		//构建courseSort对象内容
 		cs.setSortId(sortId);
 		
@@ -205,7 +210,7 @@ public class addCourseController {
 	         String originalFileName = file.getOriginalFilename();  
 	         //新文件名，添加原始文件名后缀  
 	         String oldFileName = originalFileName.substring(0, originalFileName.lastIndexOf("."));
-	         String newFileName = "statics/videos/" + UUID.randomUUID() + oldFileName;  
+	         String newFileName = "statics/videos/" + UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
 	         //创建新文件，路径为：图片服务器路径+新文件名  
 	         File newFile = new File(file_path + newFileName);  
 	         //将内存中的数据写入磁盘  

@@ -47,4 +47,19 @@ public class CourseServiceTest {
 			System.out.println("key = " + k + ",value = " + map.get(k));
 		}
 	}
+	
+	@Test
+	public void queryCourseListByIdsTest() throws Exception {
+		List<String> ids = new ArrayList<String>();
+		List<Map<Object, Object>> courseList = new ArrayList<Map<Object, Object>>();
+		ids.add("13");
+		ids.add("20");
+		courseList = courseService.queryCourseListByIds(ids);
+		for (Map<Object, Object> map : courseList) {
+			for(Object k : map.keySet()) {
+				System.out.println("key = " + k + ", value = " + map.get(k));
+			}
+		}
+		
+	}
 }

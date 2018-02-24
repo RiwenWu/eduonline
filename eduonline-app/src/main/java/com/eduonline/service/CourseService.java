@@ -17,4 +17,12 @@ public interface CourseService {
 	List<Map<String, Object>> queryCourseListByPage(Integer start, Integer end) throws Exception;
 	
 	Map<String, Object> queryCourseById(Long id) throws Exception;
+	
+	/**
+	 * 根据LsitIds获取课程列表
+	 * @param courseIds
+	 * @return
+	 * @throws Exception
+	 */
+	List<Map<Object, Object>> queryCourseListByIds(List<String> courseIds) throws Exception;
 }
