@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eduonline.dao.ShopCarMapper" >
+  <resultMap id="BaseResultMap" type="com.eduonline.model.ShopCar" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="course_id" property="courseId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="order_state" property="orderState" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, course_id, create_time, user_id, modify_time, state, order_state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from us_shopcar
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from us_shopcar
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.eduonline.model.ShopCar" >
+    insert into us_shopcar (id, course_id, create_time, 
+      user_id, modify_time, state, 
+      order_state)
+    values (#{id,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{userId,jdbcType=BIGINT}, #{modifyTime,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}, 
+      #{orderState,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eduonline.model.ShopCar" >
+    insert into us_shopcar
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="orderState != null" >
+        order_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="orderState != null" >
+        #{orderState,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eduonline.model.ShopCar" >
+    update us_shopcar
+    <set >
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="orderState != null" >
+        order_state = #{orderState,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eduonline.model.ShopCar" >
+    update us_shopcar
+    set course_id = #{courseId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=BIGINT},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      order_state = #{orderState,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 一下自定义 -->
+  <select id="selectByShopCar" resultMap="BaseResultMap" parameterType="com.eduonline.model.ShopCar">
+  	select 
+  		<include refid="Base_Column_List" />
+    from 
+    	us_shopcar
+    where
+    	course_id = #{courseId,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="queryCourseListByuserId" resultType="map" parameterType="java.lang.Long">
+  	select
+		us.id AS shopcar_id,
+		course.id,
+		course.name,
+		course.salary,
+		course.free_state,
+		cover.picurl,
+		us.create_time
+	from
+		us_shopcar us
+		left join
+		us_course course
+		on us.course_id = course.id
+		inner join us_cover cover
+		on cover.id = course.cover_id
+	where
+		us.user_id = #{userId,jdbcType=BIGINT} and us.state = 0 and us.order_state = 0
+	order by us.create_time desc
+  </select>
+  
+  <select id="selectByShopCar2" resultMap="BaseResultMap" parameterType="com.eduonline.model.ShopCar">
+  	select 
+  		<include refid="Base_Column_List" />
+    from 
+    	us_shopcar
+    where
+    	course_id = #{courseId,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT} and state = 0 and order_state = 0
+  </select>
+  
+</mapper>

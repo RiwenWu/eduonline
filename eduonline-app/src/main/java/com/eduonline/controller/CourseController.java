@@ -43,7 +43,7 @@ public class CourseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/queryallcourseBypage.json", method = RequestMethod.GET)
-	public Map<String, Object> QueryAllCourseByPageRecommand(@RequestParam(value = "PAGENO") Integer pageNo) {
+	public Map<String, Object> queryAllCourseByPageRecommand(@RequestParam(value = "PAGENO") Integer pageNo) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Map<String, Object>> courseList = new ArrayList<Map<String, Object>>();
@@ -129,7 +129,7 @@ public class CourseController {
 					uc.setCollection(collection);
 					userCollectionService.updateByPrimaryKeySelective(uc);
 				}
-				if (collection.equals("0")) {
+				if ("0".equals(collection)) {
 					map.put("code", 0);
 				} else {
 					map.put("code", 1);
@@ -228,7 +228,7 @@ public class CourseController {
 					ujp.setJoinState(joinState);
 					userJoinPlanService.updateByPrimaryKeySelective(ujp);
 				}
-				if (joinState.equals("0")) {
+				if ("0".equals(joinState)) {
 					map.put("code", 0);
 				} else {
 					map.put("code", 1);
