@@ -1,6 +1,8 @@
 package com.eduonline.service.impl;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,16 @@ public class OrderServiceImpl implements OrderService{
 		order.setCreateTime(new Date());
 		return orderMapper.insertSelective(order);
 	}
+	
+	@Override
+	public List<Order> queryOrderListByuserId(Long userId, String state) throws Exception {
+		return orderMapper.queryOrderListByuserId(userId, state);
+	}
+	
+	@Override
+	public List<Map<String, Object>> queryCourseListByorderId(Long orderId) throws Exception {
+		return orderMapper.queryCourseListByorderId(orderId);
+	}
 
 	/**
 	 * 随机生成数字
@@ -44,4 +56,5 @@ public class OrderServiceImpl implements OrderService{
 		}
 		return new String(randBuffer);
 	}
+
 }

@@ -103,4 +103,45 @@
       summoney = #{summoney,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <!-- 以下自定义 -->
+  <select id="queryOrderListByuserId" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List" />
+  	from
+  		us_order
+  	where
+  		user_id = #{userId,jdbcType=BIGINT}
+  		<if test="state != null">
+  			and state = #{state,jdbcType=VARCHAR}
+  		</if>
+  	order by create_time desc
+  </select>
+  
+  <select id="queryCourseListByorderId" resultType="map">
+  	select
+		temp_table.courseId,
+		temp_table.courseName,
+		temp_table.courseSalary,
+		temp_table.coursePic,
+		order1.state
+	from
+		 (
+			select
+				course.id As courseId,
+				course.name As courseName,
+				course.salary As courseSalary,
+				cover.picurl As coursePic
+			from
+				us_course course
+				left join us_cover cover
+				on course.cover_id = cover.id
+		) temp_table
+		left join us_order_course uoc
+		on temp_table.courseId = uoc.course_id
+		inner join us_order order1
+		on uoc.order_id = order1.id
+	where
+		order1.id = #{id,jdbcType=BIGINT}
+  </select>
 </mapper>
