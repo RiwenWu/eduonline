@@ -42,9 +42,5 @@ public class UserServiceTest {
 		userService.insertSelective(user);
 	}
 	
-	@Test
-	public void selsectByAccountTest() throws Exception {
-		User user = userService.selsectByAccount("wrw");
-		assertNotNull(user);
-	}
+
 }

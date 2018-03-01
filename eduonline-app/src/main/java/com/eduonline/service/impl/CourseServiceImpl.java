@@ -39,4 +39,9 @@ public class CourseServiceImpl implements CourseService{
 		return courseList;
 	}
 
+	@Override
+	public List<Map<String, Object>> findCourseByinput(String inputValue) throws Exception {
+		return courseMapper.findCourseByinput(inputValue);
+	}
+
 }

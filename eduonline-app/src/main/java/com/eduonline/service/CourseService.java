@@ -25,4 +25,6 @@ public interface CourseService {
 	 * @throws Exception
 	 */
 	List<Map<Object, Object>> queryCourseListByIds(List<String> courseIds) throws Exception;
+	
+	List<Map<String, Object>> findCourseByinput(String inputValue) throws Exception;
 }

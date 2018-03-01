@@ -264,6 +264,30 @@ public class firmOrderController {
 		}
 		return map;
 	}
+	
+	/**
+	 * 根據orderId改變訂單狀態
+	 * @param orderId
+	 * @param state
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/updateByPrimaryKeySelective.json")
+	public Map<String, Object> updateByPrimaryKeySelective(String orderId, String state){
+		Map<String, Object> map = new HashMap<String, Object>();
+		Order order = new Order();
+		map.put("boo", false);
+		Long oId = Long.parseLong(orderId);
+		order.setId(oId);
+		order.setState(state);
+		try {
+			orderService.updateByPrimaryKeySelective(order);
+			map.put("bool", true);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
 
 	// 选择截取的位置
 	public static String sub(String str, int start, int end) {

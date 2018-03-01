@@ -12,4 +12,6 @@ public interface OrderService {
 	List<Order> queryOrderListByuserId(Long userId, String state) throws Exception;
 	
 	List<Map<String, Object>> queryCourseListByorderId(Long orderId) throws Exception;
+	
+	int updateByPrimaryKeySelective(Order order);
 }

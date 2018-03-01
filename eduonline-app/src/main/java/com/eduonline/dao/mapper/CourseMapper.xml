@@ -170,4 +170,17 @@
 		course.id = #{id,jdbcType=BIGINT};
   </select>
   
+  <select id="findCourseByinput" resultType="map">
+  	select
+  		course.id,
+  		course.name,
+  		course.free_state,
+  		cover.picurl
+  	from
+  		us_course course
+  		left join us_cover cover
+  		on course.cover_id = cover.id
+  	where
+  		course.name like concat(concat('%',#{inputValue,jdbcType=VARCHAR}),'%') 
+  </select>
 </mapper>

@@ -9,5 +9,7 @@
 	<artifactId>eduonline-app</artifactId>
 	<packaging>war</packaging>
 	<description>app接口</description>
-
+	<build>
+		<finalName>eduonline-app</finalName>
+	</build>
 </project>

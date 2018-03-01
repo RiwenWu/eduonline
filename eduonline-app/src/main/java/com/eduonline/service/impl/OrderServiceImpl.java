@@ -38,6 +38,11 @@ public class OrderServiceImpl implements OrderService{
 		return orderMapper.queryCourseListByorderId(orderId);
 	}
 
+	@Override
+	public int updateByPrimaryKeySelective(Order order) {
+		return orderMapper.updateByPrimaryKeySelective(order);
+	}
+	
 	/**
 	 * 随机生成数字
 	 * @param length
@@ -56,5 +61,6 @@ public class OrderServiceImpl implements OrderService{
 		}
 		return new String(randBuffer);
 	}
+
 
 }

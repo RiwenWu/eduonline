@@ -276,7 +276,7 @@ public class CourseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "queryJoinCourseListById.json")
+	@RequestMapping(value = "/queryJoinCourseListById.json")
 	public Map<String, Object> queryJoinCourseListById(String userId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Long uId = Long.parseLong(userId);
@@ -298,7 +298,7 @@ public class CourseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "queryVideoListByCourseId.json")
+	@RequestMapping(value = "/queryVideoListByCourseId.json")
 	public Map<String, Object> queryVideoListByCourseId(String courseId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Long cId = Long.parseLong(courseId);
@@ -314,23 +314,25 @@ public class CourseController {
 	}
 	
 	/**
-	 * 根据videoId获取video
+	 * 根據搜索内容獲取課程
 	 * @param courseId
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "queryVideoById.json")
-	public Map<String, Object> queryVideoById(String videoId) {
+	@RequestMapping(value = "/findCourseByinput.json")
+	public Map<String, Object> findCourseByinput(String inputValue) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		List<Map<String, Object>> courseList = new ArrayList();
 		map.put("bool", false);
-		Long vId = Long.parseLong(videoId);
+		
 		try {
-			Video video = videoService.selectByPrimaryKey(vId);
+			courseList = courseService.findCourseByinput(inputValue);
+			map.put("data", courseList);
 			map.put("bool", true);
-			map.put("data", video);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return map;
 	}
+
 }
