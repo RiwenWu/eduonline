@@ -60,6 +60,25 @@ public class CourseServiceTest {
 				System.out.println("key = " + k + ", value = " + map.get(k));
 			}
 		}
-		
+	}
+	
+	@Test
+	public void queryCourseListBysortIdTest() throws Exception {
+		List<Map<String, Object>> courseList = courseService.queryCourseListBysortId(19L);
+		for(Map<String, Object> map : courseList) {
+			for(String key : map.keySet()) {
+				System.out.println("key = " + key + " ,value = " + map.get(key));
+			}
+		}
+	}
+	
+	@Test
+	public void queryComnendCourseList() throws Exception {
+		List<Map<String, Object>> courseList = courseService.queryComnendCourseList();
+		for(Map<String, Object> map : courseList) {
+			for(String key : map.keySet()) {
+				System.out.println("key = " + key + " ,value = " + map.get(key));
+			}
+		}
 	}
 }

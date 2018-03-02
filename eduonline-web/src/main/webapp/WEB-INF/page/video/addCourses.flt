@@ -146,6 +146,7 @@ var courseSalary;//课程售价
 	    var uploadInst = upload.render({
 	        elem: '#test1',
 	        url: '../video/addCourse/cover_save.json',
+	        method: 'post',
 	        title: '请上传课程封面',
 	        before: function(obj) {
 	            //预读本地文件示例，不支持ie8

@@ -22,6 +22,8 @@ public class Course {
 
     private BigDecimal salary;
 
+    private String commendState;
+
     public Long getId() {
         return id;
     }
@@ -92,5 +94,13 @@ public class Course {
 
     public void setSalary(BigDecimal salary) {
         this.salary = salary;
+    }
+
+    public String getCommendState() {
+        return commendState;
+    }
+
+    public void setCommendState(String commendState) {
+        this.commendState = commendState == null ? null : commendState.trim();
     }
 }

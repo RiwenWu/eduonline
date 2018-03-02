@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>课程分类</title>
+    <#include "header.flt">
+</head>
+
+<body>
+<div id="one">
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="searchValue1" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload1">搜索</button>
+    </div>
+    <table class="layui-hide" id="recommendedCourses" lay-filter="user"></table>
+</div>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+  <legend>我是分割线</legend>
+</fieldset>
+
+<div id="two">
+    <div class="demoTable1">
+        <div class="layui-inline">
+            <input class="layui-input" name="searchValue2" id="search" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload2">搜索</button>
+    </div>
+    <table class="layui-hide" id="LAY_table_user" lay-filter="demo"></table>
+</div>
+</body>
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">取消推荐</a>
+</script>
+<script type="text/html" id="uncommendOption">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">加入</a>
+</script>
+<script>
+layui.use(['form', 'table'], function() {
+    var form = layui.form,
+        layer = layui.layer,
+        table = layui.table;
+
+    //方法级渲染
+    table.render({
+        elem: '#recommendedCourses',
+        url: '../video/courseManage/queryCourseListBycommendState.json',
+        where: {commendState: 1},
+        cols: [
+            [
+                { checkbox: true, fixed: true },
+                { field: 'name', title: '课程名称', width: 120, sort: true, fixed: true }, 
+                { field: 'sortName', title: '分类名称', width: 160 },
+                { field: 'free_state', title: '是否收费', width: 160, sort: true },  
+                {fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}
+            ]
+        ],
+        id: 'commendTable',
+        height: 200
+    });
+    
+    //监听工具条
+	  table.on('tool(user)', function(obj){
+	    var data = obj.data;
+	    if(obj.event === 'detail'){
+	      layer.msg('ID：'+ data.id + ' 的查看操作');
+	    } else if(obj.event === 'edit'){
+	      //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+	      changeCommendState(data.id, 0);
+	    }
+	  });
+    
+    //方法级渲染
+    table.render({
+    	id: 'uncommendTable',
+        elem: '#LAY_table_user',
+        url: '../video/courseManage/queryCourseListBycommendState.json',
+        where: {commendState: 0},
+        cols: [
+            [
+                { checkbox: true, fixed: true },
+                { field: 'name', title: '课程名称', width: 120, sort: true, fixed: true }, 
+                { field: 'sortName', title: '分类名称', width: 160 },
+                { field: 'free_state', title: '是否收费', width: 160, sort: true }, 
+                {fixed: 'right', width:178, align:'center', toolbar: '#uncommendOption'}
+            ]
+        ],
+        height: 315
+    });
+    
+    //监听工具条
+	  table.on('tool(demo)', function(obj){
+	    var data = obj.data;
+	    if(obj.event === 'detail'){
+	      layer.msg('ID：'+ data.id + ' 的查看操作');
+	    } else if(obj.event === 'edit'){
+	      //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+	      changeCommendState(data.id, 1);
+	    }
+	  });
+
+    var $ = layui.$,
+        active = {
+        	reload1: function() {
+                var $demoReload = $('#demoReload').val();
+
+                //执行重载
+                table.reload('commendTable', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    },
+                    where: {
+                    	inputValue: $demoReload
+                    }
+                });
+            },
+            reload2: function() {
+                var $search = $('#search').val();
+
+                //执行重载
+                table.reload('uncommendTable', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    },
+                    where: {
+                    	inputValue: $search
+                    }
+                });
+            }
+        };
+
+	    $('.demoTable1 .layui-btn').on('click', function() {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    });
+
+});
+
+function changeCommendState(id, state) {
+    $.ajax({
+        url: '../video/courseManage/changeCommendState.json',
+        data: {courseId: id, commendState: state},
+        dataType: 'json',
+        type: 'post',
+        success: function(data) {
+            if (data.bool) {
+                location.reload();
+            } else {
+                if (data.msg != null) {
+                    layer.msg(data.msg);
+                } else {
+                    layer.msg('出现未知错误，请联系我们');
+                }
+            }
+        }
+    })
+}
+</script>
+
+</html>

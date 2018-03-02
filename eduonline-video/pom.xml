@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.wrw.eduonline</groupId>
 		<artifactId>eduonline</artifactId>
-		<version>${eduonline-version}</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>eduonline-video</artifactId>
 	<name>eduonline-video</name>
@@ -14,7 +14,7 @@
 		<dependency>
 			<groupId>com.wrw.eduonline</groupId>
 			<artifactId>eduonline-common</artifactId>
-			<version>${eduonline-version}</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

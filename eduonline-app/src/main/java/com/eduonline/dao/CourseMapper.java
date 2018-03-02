@@ -27,4 +27,8 @@ public interface CourseMapper {
 	Map<Object, Object> queryCourseByIds(Long courseId) throws Exception;
 	
 	List<Map<String, Object>> findCourseByinput(String inputValue) throws Exception;
+	
+	List<Map<String, Object>> queryCourseListBysortId(Long sortId) throws Exception;
+	
+	List<Map<String, Object>> queryComnendCourseList() throws Exception;
 }

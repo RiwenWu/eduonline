@@ -335,4 +335,47 @@ public class CourseController {
 		return map;
 	}
 
+	/**
+	 * 根据sortId获取courseList
+	 * @param sortId
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/queryCourseListBysortId.json")
+	public Map<String, Object> queryCourseListBysortId(String sortId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Map<String, Object>> courseList = new ArrayList<Map<String, Object>>();
+		map.put("bool", false);
+		Long sId = Long.parseLong(sortId);
+		try {
+			courseList = courseService.queryCourseListBysortId(sId);
+			map.put("bool", true);
+			map.put("data", courseList);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	/**
+	 * 获取4个推荐课程
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/queryComnendCourseList.json")
+	public Map<String, Object> queryComnendCourseList(){
+		
+		List<Map<String, Object>> courseList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("bool", false);
+		try {
+			courseList = courseService.queryComnendCourseList();
+			map.put("bool", true);
+			map.put("data", courseList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
 }

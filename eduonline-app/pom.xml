@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.wrw.eduonline</groupId>
 		<artifactId>eduonline</artifactId>
-		<version>${eduonline-version}</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>eduonline-app</artifactId>
 	<packaging>war</packaging>

@@ -1,5 +1,10 @@
 package com.wrw.eduonline.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.wrw.eduonline.entity.Course;
 
 public interface CourseMapper {
@@ -14,4 +19,6 @@ public interface CourseMapper {
     int updateByPrimaryKeySelective(Course record);
 
     int updateByPrimaryKey(Course record);
+    
+    List<Map<String, Object>> queryCourseListBycommendState(@Param("commendState") String commendState, @Param("inputValue")String inputValue) throws Exception;
 }

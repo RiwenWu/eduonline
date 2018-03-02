@@ -19,8 +19,10 @@ public class Course {
     private String freeState;
 
     private Long coverId;
-    
+
     private BigDecimal salary;
+
+    private String commendState;
 
     public Long getId() {
         return id;
@@ -85,12 +87,20 @@ public class Course {
     public void setCoverId(Long coverId) {
         this.coverId = coverId;
     }
-    
+
     public BigDecimal getSalary() {
         return salary;
     }
 
     public void setSalary(BigDecimal salary) {
         this.salary = salary;
+    }
+
+    public String getCommendState() {
+        return commendState;
+    }
+
+    public void setCommendState(String commendState) {
+        this.commendState = commendState == null ? null : commendState.trim();
     }
 }

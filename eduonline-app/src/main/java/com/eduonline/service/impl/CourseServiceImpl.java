@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,37 @@ public class CourseServiceImpl implements CourseService{
 	@Override
 	public List<Map<String, Object>> findCourseByinput(String inputValue) throws Exception {
 		return courseMapper.findCourseByinput(inputValue);
+	}
+
+	/**
+	 * 根据sortId获取courseList
+	 * @param sortId
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public List<Map<String, Object>> queryCourseListBysortId(Long sortId) throws Exception {
+		return courseMapper.queryCourseListBysortId(sortId);
+	}
+
+	/**
+	 * 获取推荐课程列表并随机选取4个
+	 */
+	@Override
+	public List<Map<String, Object>> queryComnendCourseList() throws Exception {
+		List<Map<String, Object>> courseList = new ArrayList<>();
+		List<Map<String, Object>> temp_courseList = courseMapper.queryComnendCourseList();
+		Map<String, Object> course = new HashMap<String, Object>();
+		if(temp_courseList.size() > 4) {
+			for(int i = 0; i < 4; i++) {
+				course = temp_courseList.get(new Random().nextInt(temp_courseList.size()));
+				temp_courseList.remove(course);
+				courseList.add(course);
+			}
+		}else {
+			courseList = temp_courseList;
+		}
+		return courseList;
 	}
 
 }

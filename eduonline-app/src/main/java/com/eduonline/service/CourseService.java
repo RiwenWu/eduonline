@@ -26,5 +26,26 @@ public interface CourseService {
 	 */
 	List<Map<Object, Object>> queryCourseListByIds(List<String> courseIds) throws Exception;
 	
+	/**
+	 * 根据搜索内容获取courseList
+	 * @param inputValue
+	 * @return
+	 * @throws Exception
+	 */
 	List<Map<String, Object>> findCourseByinput(String inputValue) throws Exception;
+	
+	/**
+	 * 根据sortId获取courseList
+	 * @param sortId
+	 * @return
+	 * @throws Exception
+	 */
+	List<Map<String, Object>> queryCourseListBysortId(Long sortId) throws Exception;
+	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	List<Map<String, Object>> queryComnendCourseList() throws Exception;
 }

@@ -6,7 +6,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>com.wrw.eduonline</groupId>
     <artifactId>eduonline</artifactId>
-    <version>${eduonline-version}</version>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>eduonline-api</artifactId>
   <name>eduonline-api</name>

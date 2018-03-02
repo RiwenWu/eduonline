@@ -11,9 +11,11 @@
     <result column="free_state" property="freeState" jdbcType="VARCHAR" />
     <result column="cover_id" property="coverId" jdbcType="BIGINT" />
     <result column="salary" property="salary" jdbcType="DECIMAL" />
+    <result column="commend_state" property="commendState" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, introduce, create_time, modify_time, pic_url, free_state, cover_id, salary
+    id, name, introduce, create_time, modify_time, pic_url, free_state, cover_id, salary, 
+    commend_state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -28,12 +30,14 @@
   <insert id="insert" parameterType="com.eduonline.model.Course" >
     insert into us_course (id, name, introduce, 
       create_time, modify_time, pic_url, 
-      free_state, cover_id)
+      free_state, cover_id, salary, 
+      commend_state)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=DATE}, #{modifyTime,jdbcType=DATE}, #{picUrl,jdbcType=VARCHAR}, 
-      #{freeState,jdbcType=VARCHAR}, #{coverId,jdbcType=BIGINT})
+      #{freeState,jdbcType=VARCHAR}, #{coverId,jdbcType=BIGINT}, #{salary,jdbcType=DECIMAL}, 
+      #{commendState,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.eduonline.model.Course" >
+  <insert id="insertSelective" parameterType="com.eduonline.model.Course" >
     insert into us_course
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -59,6 +63,12 @@
       </if>
       <if test="coverId != null" >
         cover_id,
+      </if>
+      <if test="salary != null" >
+        salary,
+      </if>
+      <if test="commendState != null" >
+        commend_state,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -86,6 +96,12 @@
       <if test="coverId != null" >
         #{coverId,jdbcType=BIGINT},
       </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=DECIMAL},
+      </if>
+      <if test="commendState != null" >
+        #{commendState,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.eduonline.model.Course" >
@@ -112,6 +128,12 @@
       <if test="coverId != null" >
         cover_id = #{coverId,jdbcType=BIGINT},
       </if>
+      <if test="salary != null" >
+        salary = #{salary,jdbcType=DECIMAL},
+      </if>
+      <if test="commendState != null" >
+        commend_state = #{commendState,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -123,7 +145,9 @@
       modify_time = #{modifyTime,jdbcType=DATE},
       pic_url = #{picUrl,jdbcType=VARCHAR},
       free_state = #{freeState,jdbcType=VARCHAR},
-      cover_id = #{coverId,jdbcType=BIGINT}
+      cover_id = #{coverId,jdbcType=BIGINT},
+      salary = #{salary,jdbcType=DECIMAL},
+      commend_state = #{commendState,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   
@@ -182,5 +206,19 @@
   		on course.cover_id = cover.id
   	where
   		course.name like concat(concat('%',#{inputValue,jdbcType=VARCHAR}),'%') 
+  </select>
+  
+  <select id="queryComnendCourseList" resultType="map">
+  	select
+  		course.id,
+  		course.name,
+  		course.free_state,
+  		cover.picurl
+  	from
+  		us_course course
+  		left join us_cover cover
+  		on course.cover_id = cover.id
+  	where
+  		course.commend_state = 1
   </select>
 </mapper>

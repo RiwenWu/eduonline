@@ -46,7 +46,8 @@ public class SortServiceTest {
 		*/
 		System.out.println(sortDTOList.size());
 		for(SortDTO sortDTO : sortDTOList) {
-			System.out.println(sortDTO.getType() + sortDTO.getName() + sortDTO.getSecondMenuName() + sortDTO.getFirstMenuName());
+			if(sortDTO.getType().equals("2"))
+			System.out.println(sortDTO.getId() + sortDTO.getName());
 		}
 	}
 	

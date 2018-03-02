@@ -3,6 +3,10 @@
 	<name>eduonline-web</name>
 	<comment></comment>
 	<projects>
+		<project>eduonline-common</project>
+		<project>eduonline-shiro</project>
+		<project>eduonline-api</project>
+		<project>eduonline-video</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
