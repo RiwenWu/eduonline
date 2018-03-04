@@ -12,7 +12,7 @@
         <div class="layui-inline">
             <input class="layui-input" name="searchValue1" id="demoReload" autocomplete="off">
         </div>
-        <button class="layui-btn" data-type="reload1">搜索</button>
+        <button class="layui-btn" data-type="reload">搜索</button>
     </div>
     <table class="layui-hide" id="recommendedCourses" lay-filter="user"></table>
 </div>
@@ -45,20 +45,19 @@ layui.use(['form', 'table'], function() {
         layer = layui.layer,
         table = layui.table;
 
-    //方法级渲染
-    table.render({
-        elem: '#recommendedCourses',
-        url: '../video/courseManage/queryCourseListBycommendState.json',
-        where: {commendState: 1},
-        cols: [
-            [
+	var datalist1 = [
                 { checkbox: true, fixed: true },
                 { field: 'name', title: '课程名称', width: 120, sort: true, fixed: true }, 
                 { field: 'sortName', title: '分类名称', width: 160 },
                 { field: 'free_state', title: '是否收费', width: 160, sort: true },  
                 {fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}
-            ]
-        ],
+            ];
+    //方法级渲染
+    table.render({
+        elem: '#recommendedCourses',
+        url: '../video/courseManage/queryCourseListBycommendState.json',
+        where: {commendState: 1},
+        cols: [datalist1],
         id: 'commendTable',
         height: 200
     });
@@ -105,9 +104,9 @@ layui.use(['form', 'table'], function() {
 
     var $ = layui.$,
         active = {
-        	reload1: function() {
+        	reload: function() {
                 var $demoReload = $('#demoReload').val();
-
+				console.log($demoReload)
                 //执行重载
                 table.reload('commendTable', {
                     page: {
@@ -120,7 +119,7 @@ layui.use(['form', 'table'], function() {
             },
             reload2: function() {
                 var $search = $('#search').val();
-
+				console.log($search)
                 //执行重载
                 table.reload('uncommendTable', {
                     page: {
@@ -133,10 +132,15 @@ layui.use(['form', 'table'], function() {
             }
         };
 
+		$('.demoTable .layui-btn').on('click', function() {
+	        var type = $(this).data('type');
+	        active[type] ? active[type].call(this) : '';
+        });
+
 	    $('.demoTable1 .layui-btn').on('click', function() {
-        var type = $(this).data('type');
-        active[type] ? active[type].call(this) : '';
-    });
+	        var type = $(this).data('type');
+	        active[type] ? active[type].call(this) : '';
+	    });
 
 });
 
@@ -151,7 +155,7 @@ function changeCommendState(id, state) {
                 location.reload();
             } else {
                 if (data.msg != null) {
-                    layer.msg(data.msg);
+                    table.reload('commendTable',{cols:[datalist1]});
                 } else {
                     layer.msg('出现未知错误，请联系我们');
                 }

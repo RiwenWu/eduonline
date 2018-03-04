@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.eduonline.model.OfflineCourse;
 import com.eduonline.model.UserCollection;
 import com.eduonline.model.UserJoinPlan;
 import com.eduonline.model.Video;
 import com.eduonline.service.CourseService;
 import com.eduonline.service.CourseVideoService;
+import com.eduonline.service.OfflineCourseService;
 import com.eduonline.service.UserCollectionService;
 import com.eduonline.service.UserJoinPlanService;
 import com.eduonline.service.VideoService;
@@ -34,6 +36,8 @@ public class CourseController {
 	private CourseVideoService courseVideoService;
 	@Autowired
 	private VideoService videoService;
+	@Autowired
+	private OfflineCourseService offlineCourseService;
 
 	/**
 	 * 根据pageNo获取全部课程列表
@@ -378,4 +382,6 @@ public class CourseController {
 		}
 		return map;
 	}
+	
+
 }

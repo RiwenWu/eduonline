@@ -12,10 +12,12 @@
     <result column="cover_id" property="coverId" jdbcType="BIGINT" />
     <result column="salary" property="salary" jdbcType="DECIMAL" />
     <result column="commend_state" property="commendState" jdbcType="VARCHAR" />
+    <result column="offlinecourse_id" property="offlinecourseId" jdbcType="BIGINT" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, introduce, create_time, modify_time, pic_url, free_state, cover_id, salary, 
-    commend_state
+    commend_state, offlinecourse_id, state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -31,11 +33,13 @@
     insert into us_course (id, name, introduce, 
       create_time, modify_time, pic_url, 
       free_state, cover_id, salary, 
-      commend_state)
+      commend_state, offlinecourse_id, state
+      )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=DATE}, #{modifyTime,jdbcType=DATE}, #{picUrl,jdbcType=VARCHAR}, 
       #{freeState,jdbcType=VARCHAR}, #{coverId,jdbcType=BIGINT}, #{salary,jdbcType=DECIMAL}, 
-      #{commendState,jdbcType=VARCHAR})
+      #{commendState,jdbcType=VARCHAR}, #{offlinecourseId,jdbcType=BIGINT}, #{state,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.eduonline.model.Course" >
     insert into us_course
@@ -70,6 +74,12 @@
       <if test="commendState != null" >
         commend_state,
       </if>
+      <if test="offlinecourseId != null" >
+        offlinecourse_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -101,6 +111,12 @@
       </if>
       <if test="commendState != null" >
         #{commendState,jdbcType=VARCHAR},
+      </if>
+      <if test="offlinecourseId != null" >
+        #{offlinecourseId,jdbcType=BIGINT},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -134,6 +150,12 @@
       <if test="commendState != null" >
         commend_state = #{commendState,jdbcType=VARCHAR},
       </if>
+      <if test="offlinecourseId != null" >
+        offlinecourse_id = #{offlinecourseId,jdbcType=BIGINT},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -147,78 +169,82 @@
       free_state = #{freeState,jdbcType=VARCHAR},
       cover_id = #{coverId,jdbcType=BIGINT},
       salary = #{salary,jdbcType=DECIMAL},
-      commend_state = #{commendState,jdbcType=VARCHAR}
+      commend_state = #{commendState,jdbcType=VARCHAR},
+      offlinecourse_id = #{offlinecourseId,jdbcType=BIGINT},
+      state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
+
   <!-- 以下自定义 -->
   <select id="queryCourseListByPage" resultType="map">
-  	select 
-		course.id,
-		course.name,
-		course.free_state,
-		cover.picurl
-	from
-		us_course course left join us_cover cover 
-		on course.cover_id = cover.id
-		order by course.create_time desc
-	limit #{start}, #{end};
+    select 
+    course.id,
+    course.name,
+    course.free_state,
+    course.offlinecourse_id,
+    cover.picurl
+  from
+    us_course course left join us_cover cover 
+    on course.cover_id = cover.id
+    order by course.create_time desc
+  limit #{start}, #{end};
   </select>
   
   <select id="queryCourseById" resultType="map" parameterType="java.lang.Long">
-  	select 
-		course.id,
-		course.name,
-		course.introduce,
-		course.free_state,
-		course.salary,
-		cover.picurl
-	from
-		us_course course left join us_cover cover 
-		on course.cover_id = cover.id
-	where
-		course.id = #{id,jdbcType=BIGINT};
+    select 
+    course.id,
+    course.name,
+    course.introduce,
+    course.free_state,
+    course.salary,
+    course.offlinecourse_id,
+    cover.picurl
+  from
+    us_course course left join us_cover cover 
+    on course.cover_id = cover.id
+  where
+    course.id = #{id,jdbcType=BIGINT};
   </select>
   <select id="queryCourseByIds" resultType="map" parameterType="java.lang.Long">
-  	select 
-		course.id,
-		course.name,
-		course.introduce,
-		course.free_state,
-		course.salary,
-		cover.picurl
-	from
-		us_course course left join us_cover cover 
-		on course.cover_id = cover.id
-	where
-		course.id = #{id,jdbcType=BIGINT};
+    select 
+    course.id,
+    course.name,
+    course.introduce,
+    course.free_state,
+    course.salary,
+    cover.picurl
+  from
+    us_course course left join us_cover cover 
+    on course.cover_id = cover.id
+  where
+    course.id = #{id,jdbcType=BIGINT};
   </select>
   
   <select id="findCourseByinput" resultType="map">
-  	select
-  		course.id,
-  		course.name,
-  		course.free_state,
-  		cover.picurl
-  	from
-  		us_course course
-  		left join us_cover cover
-  		on course.cover_id = cover.id
-  	where
-  		course.name like concat(concat('%',#{inputValue,jdbcType=VARCHAR}),'%') 
+    select
+      course.id,
+      course.name,
+      course.free_state,
+      cover.picurl
+    from
+      us_course course
+      left join us_cover cover
+      on course.cover_id = cover.id
+    where
+      course.name like concat(concat('%',#{inputValue,jdbcType=VARCHAR}),'%') 
   </select>
   
   <select id="queryComnendCourseList" resultType="map">
-  	select
-  		course.id,
-  		course.name,
-  		course.free_state,
-  		cover.picurl
-  	from
-  		us_course course
-  		left join us_cover cover
-  		on course.cover_id = cover.id
-  	where
-  		course.commend_state = 1
+    select
+      course.id,
+      course.name,
+      course.free_state,
+      cover.picurl
+    from
+      us_course course
+      left join us_cover cover
+      on course.cover_id = cover.id
+    where
+      course.commend_state = 1
   </select>
 </mapper>

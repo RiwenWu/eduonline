@@ -97,6 +97,44 @@
 		  </div>
 		  <button type="button" class="layui-btn" id="testListAction">开始上传</button>
 		</div> 
+		
+		<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+		  <legend>发起线下课程</legend>
+		</fieldset>
+		
+		<form class="layui-form" action="" lay-filter="setpTwo">
+            <div class="layui-form-item">
+                <label class="layui-form-label">主题</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" id="title" lay-verify="required|title" autocomplete="off" placeholder="请输入名称" class="layui-input" lay-filter="courseTitle">
+                </div>
+            </div>
+			<div class="layui-form-item">
+		      <label class="layui-form-label">开始和结束时间</label>
+		      <div class="layui-input-inline">
+		        <input type="text" class="layui-input" lay-verify="required" id="startAndEnd" placeholder="开始 到 结束">
+		      </div>
+		    </div>
+		    <div class="layui-form-item">
+                <label class="layui-form-label">地点</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" id="place" lay-verify="required" autocomplete="off" placeholder="请输入地点" class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">详情描述</label>
+                <div class="layui-input-block">
+                    <textarea id="detail" placeholder="请输入内容" class="layui-textarea" lay-verify="required"></textarea>
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="addOffLineCourse">添加</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
     </div>
 </body>
 <script>
@@ -111,15 +149,22 @@ var freeState; //是否免费
 var courseIntroduct; //课程介绍
 var courseSalary;//课程售价
 
-	layui.use(['form', 'upload', 'layedit'], function() {
+	layui.use(['form', 'upload', 'layedit', 'laydate'], function() {
 	
 	    	form = layui.form;
+	    	var laydate = layui.laydate;
 	       	var  layer = layui.layer,
 		        layedit = layui.edit,
 		        $ = layui.jquery,
 		        upload = layui.upload;
 	
-		
+		laydate.render({
+		  elem: '#startAndEnd'
+		  ,type: 'date'
+		  ,range: '~'
+		  ,format: 'yyyy/M/d'
+		});
+			
 		//初始化selct
 		getJSON('../video/addCourse/querySortList.json',$("select[name='province']").closest("div"));
 		
@@ -187,10 +232,15 @@ var courseSalary;//课程售价
 	        salary: [/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, '请输入正确的价格']
 	    });
 	    
-	    //监听提交
+	    //监听添加课程提交
 	    form.on('submit(demo1)', function(data) {
 	        addCourse();
 	        return false;
+	    });
+	    
+	    //监听线下课程提交
+	    form.on('submit(addOffLineCourse)', function(data) {
+	    	addOffLineCourse();
 	    });
 	    
 	    //多文件列表示例
@@ -347,6 +397,33 @@ var courseSalary;//课程售价
 						$("#upload-" + index + " td:first").find("input").attr("disabled",true);
 					} else{
 						layer.msg('出现未知错误，请联系我们');
+					}
+				}
+			})
+		}
+		
+		function addOffLineCourse(){
+			var title = $('#title').val();
+			var startAndEnd = $('#startAndEnd').val();
+			var place = $('#place').val();
+			var detail = $('#detail').val();
+			console.log(title + startAndEnd + place + detail)
+			
+			var data = {"title": title, "startAndEnd": startAndEnd, "place": place, "detail": detail};
+			$.ajax({
+				url:'../video/addCourse/addOffLineCourse.json',
+				data: data,
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.bool){
+						layer.msg("添加成功");
+					} else{
+						if (data.msg != null) {
+							layer.msg(data.msg);
+						} else{
+							layer.msg('出现未知错误，请联系我们');
+						}
 					}
 				}
 			})

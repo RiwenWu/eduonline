@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eduonline.dao.UserOfflinecourseMapper" >
+  <resultMap id="BaseResultMap" type="com.eduonline.model.UserOfflinecourse" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="offlinecourse_id" property="offlinecourseId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, offlinecourse_id, create_time, modify_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from us_user_offlinecourse
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from us_user_offlinecourse
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.eduonline.model.UserOfflinecourse" >
+    insert into us_user_offlinecourse (id, user_id, offlinecourse_id, 
+      create_time, modify_time, state
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{offlinecourseId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.eduonline.model.UserOfflinecourse" >
+    insert into us_user_offlinecourse
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="offlinecourseId != null" >
+        offlinecourse_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="offlinecourseId != null" >
+        #{offlinecourseId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eduonline.model.UserOfflinecourse" >
+    update us_user_offlinecourse
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="offlinecourseId != null" >
+        offlinecourse_id = #{offlinecourseId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eduonline.model.UserOfflinecourse" >
+    update us_user_offlinecourse
+    set user_id = #{userId,jdbcType=BIGINT},
+      offlinecourse_id = #{offlinecourseId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 以下自定义 -->
+  <select id="selectByIds" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	  select 
+	    <include refid="Base_Column_List" />
+	  from 
+	  	us_user_offlinecourse
+	  where 
+		user_id = #{userId,jdbcType=BIGINT} and offlinecourse_id = #{offlineCourseId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="queryOfflineCourseListByuserId" resultType="map" parameterType="java.lang.Long">
+  	select
+  		uuo.id,
+		tempTable.offlinecourseId,
+		tempTable.courseName,
+		tempTable.offlinecourseTitle,
+		tempTable.offlinecourseStartTime,
+		tempTable.offlinecourseEndTime,
+		tempTable.coverPic,
+		uuo.create_time
+	from
+		us_user_offlinecourse uuo
+		left join us_user user
+		on uuo.user_id = user.id
+		inner join(
+			select 
+				offlinecourse.id As offlinecourseId,
+				course.name As courseName,
+				offlinecourse.title As offlinecourseTitle,
+				offlinecourse.start_time As offlinecourseStartTime,
+				offlinecourse.end_time As offlinecourseEndTime,
+				cover.picurl As coverPic
+			from 
+				us_course course
+				left join us_cover cover
+				on course.cover_id = cover.id
+				inner join us_offlinecourse offlinecourse
+				on course.offlinecourse_id = offlinecourse.id
+		) tempTable
+		on tempTable.offlinecourseId = uuo.offlinecourse_id
+	where
+		uuo.user_id = #{userId,jdbcType=BIGINT} and uuo.state = 0
+	order by uuo.create_time desc
+  </select>
+</mapper>

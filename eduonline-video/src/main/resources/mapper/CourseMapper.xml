@@ -12,10 +12,11 @@
     <result column="cover_id" property="coverId" jdbcType="BIGINT" />
     <result column="salary" property="salary" jdbcType="DECIMAL" />
     <result column="commend_state" property="commendState" jdbcType="VARCHAR" />
+    <result column="offlinecourse_id" property="offlinecourseId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, introduce, create_time, modify_time, pic_url, free_state, cover_id, salary, 
-    commend_state
+    commend_state, offlinecourse_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -31,11 +32,11 @@
     insert into us_course (id, name, introduce, 
       create_time, modify_time, pic_url, 
       free_state, cover_id, salary, 
-      commend_state)
+      commend_state, offlinecourse_id)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=DATE}, #{modifyTime,jdbcType=DATE}, #{picUrl,jdbcType=VARCHAR}, 
       #{freeState,jdbcType=VARCHAR}, #{coverId,jdbcType=BIGINT}, #{salary,jdbcType=DECIMAL}, 
-      #{commendState,jdbcType=VARCHAR})
+      #{commendState,jdbcType=VARCHAR}, #{offlinecourseId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.wrw.eduonline.entity.Course" >
     insert into us_course
@@ -70,6 +71,9 @@
       <if test="commendState != null" >
         commend_state,
       </if>
+      <if test="offlinecourseId != null" >
+        offlinecourse_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -101,6 +105,9 @@
       </if>
       <if test="commendState != null" >
         #{commendState,jdbcType=VARCHAR},
+      </if>
+      <if test="offlinecourseId != null" >
+        #{offlinecourseId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -134,6 +141,9 @@
       <if test="commendState != null" >
         commend_state = #{commendState,jdbcType=VARCHAR},
       </if>
+      <if test="offlinecourseId != null" >
+        offlinecourse_id = #{offlinecourseId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -147,38 +157,39 @@
       free_state = #{freeState,jdbcType=VARCHAR},
       cover_id = #{coverId,jdbcType=BIGINT},
       salary = #{salary,jdbcType=DECIMAL},
-      commend_state = #{commendState,jdbcType=VARCHAR}
+      commend_state = #{commendState,jdbcType=VARCHAR},
+      offlinecourse_id = #{offlinecourseId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
+
   <!-- 以下自定义 -->
   <select id="queryCourseListBycommendState" resultType="map">
-  	select     
-		course.id,     
-		course.name,     
-		course.free_state,     
-		cover.picurl,
-		tempTable.sortName
-	from     
-		us_course course     
-		left join us_cover cover     
-		on course.cover_id = cover.id
-		inner join (
-			select 
-				sort.name As sortName,
-				course.id As courseId
-			from 
-				us_course_sort ucs
-				left join us_course course
-				on course.id = ucs.course_id
-				inner join us_sort sort
-				on sort.id = ucs.sort_id
-		) tempTable 
-		on course.id = tempTable.courseId
-	where
-		course.commend_state = #{commendState,jdbcType=VARCHAR}
-		<if test="inputValue != null">
-			and course.name like concat(concat('%',#{inputValue,jdbcType=VARCHAR}),'%') 
-		</if>
+    select     
+    course.id,     
+    course.name,     
+    course.free_state,     
+    cover.picurl,
+    tempTable.sortName
+  from     
+    us_course course     
+    left join us_cover cover     
+    on course.cover_id = cover.id
+    inner join (
+      select 
+        sort.name As sortName,
+        course.id As courseId
+      from 
+        us_course_sort ucs
+        left join us_course course
+        on course.id = ucs.course_id
+        inner join us_sort sort
+        on sort.id = ucs.sort_id
+    ) tempTable 
+    on course.id = tempTable.courseId
+  where
+    course.commend_state = #{commendState,jdbcType=VARCHAR}
+    <if test="inputValue != null">
+      and course.name like concat(concat('%',#{inputValue,jdbcType=VARCHAR}),'%') 
+    </if>
   </select>
 </mapper>

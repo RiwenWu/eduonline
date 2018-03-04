@@ -24,6 +24,10 @@ public class Course {
 
     private String commendState;
 
+    private Long offlinecourseId;
+
+    private String state;
+
     public Long getId() {
         return id;
     }
@@ -102,5 +106,21 @@ public class Course {
 
     public void setCommendState(String commendState) {
         this.commendState = commendState == null ? null : commendState.trim();
+    }
+
+    public Long getOfflinecourseId() {
+        return offlinecourseId;
+    }
+
+    public void setOfflinecourseId(Long offlinecourseId) {
+        this.offlinecourseId = offlinecourseId;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
     }
 }
