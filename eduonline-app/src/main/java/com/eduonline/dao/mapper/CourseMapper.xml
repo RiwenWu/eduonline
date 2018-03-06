@@ -207,17 +207,17 @@
   </select>
   <select id="queryCourseByIds" resultType="map" parameterType="java.lang.Long">
     select 
-    course.id,
-    course.name,
-    course.introduce,
-    course.free_state,
-    course.salary,
-    cover.picurl
-  from
-    us_course course left join us_cover cover 
-    on course.cover_id = cover.id
-  where
-    course.id = #{id,jdbcType=BIGINT};
+	    course.id,
+	    course.name,
+	    course.introduce,
+	    course.free_state,
+	    course.salary,
+	    cover.picurl
+	  from
+	    us_course course left join us_cover cover 
+	    on course.cover_id = cover.id
+	  where
+	    course.id = #{id,jdbcType=BIGINT};
   </select>
   
   <select id="findCourseByinput" resultType="map">
@@ -246,5 +246,26 @@
       on course.cover_id = cover.id
     where
       course.commend_state = 1
+  </select>
+  
+  <select id="queryCourseListBysortId" resultType="map" parameterType="java.lang.Long">
+  	select
+		tempTable.courseId,
+	    tempTable.courseName,
+	    tempTable.courseFree_state,
+	    tempTable.coverPicurl
+	from
+		us_sort sort
+		left join us_course_sort ucs
+		on sort.id = ucs.sort_id
+		inner join(
+		    select course.id As courseId,
+		    course.name As courseName,
+		    course.free_state As courseFree_state,
+		    cover.picurl As coverPicurl from us_course course left join us_cover cover on course.cover_id = cover.id
+		) tempTable
+		on tempTable.courseId = ucs.course_id
+	where
+		sort.id = #{sortId,jdbcType=BIGINT}
   </select>
 </mapper>
