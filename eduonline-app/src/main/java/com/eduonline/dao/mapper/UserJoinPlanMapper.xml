@@ -7,11 +7,17 @@
     <result column="course_id" property="courseId" jdbcType="BIGINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
-    <result column="planfinish_time" property="planfinishTime" jdbcType="TIMESTAMP" />
+    <result column="clocksetting_state" property="clocksettingState" jdbcType="VARCHAR" />
     <result column="join_state" property="joinState" jdbcType="VARCHAR" />
+    <result column="clock_state" property="clockState" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="hour" property="hour" jdbcType="VARCHAR" />
+    <result column="miuntes" property="miuntes" jdbcType="VARCHAR" />
+    <result column="daysofweek" property="daysofweek" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, course_id, create_time, modify_time, planfinish_time, join_state
+    id, user_id, course_id, create_time, modify_time, clocksetting_state, join_state, 
+    clock_state, content, hour, miuntes, daysofweek
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -25,11 +31,15 @@
   </delete>
   <insert id="insert" parameterType="com.eduonline.model.UserJoinPlan" >
     insert into us_user_join_plan (id, user_id, course_id, 
-      create_time, modify_time, planfinish_time, 
-      join_state)
+      create_time, modify_time, clocksetting_state, 
+      join_state, clock_state, content, 
+      hour, miuntes, daysofweek
+      )
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{courseId,jdbcType=BIGINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{planfinishTime,jdbcType=TIMESTAMP}, 
-      #{joinState,jdbcType=VARCHAR})
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{clocksettingState,jdbcType=VARCHAR}, 
+      #{joinState,jdbcType=VARCHAR}, #{clockState,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{hour,jdbcType=VARCHAR}, #{miuntes,jdbcType=VARCHAR}, #{daysofweek,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.eduonline.model.UserJoinPlan" >
     insert into us_user_join_plan
@@ -49,11 +59,26 @@
       <if test="modifyTime != null" >
         modify_time,
       </if>
-      <if test="planfinishTime != null" >
-        planfinish_time,
+      <if test="clocksettingState != null" >
+        clocksetting_state,
       </if>
       <if test="joinState != null" >
         join_state,
+      </if>
+      <if test="clockState != null" >
+        clock_state,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="hour != null" >
+        hour,
+      </if>
+      <if test="miuntes != null" >
+        miuntes,
+      </if>
+      <if test="daysofweek != null" >
+        daysofweek,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -72,11 +97,26 @@
       <if test="modifyTime != null" >
         #{modifyTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="planfinishTime != null" >
-        #{planfinishTime,jdbcType=TIMESTAMP},
+      <if test="clocksettingState != null" >
+        #{clocksettingState,jdbcType=VARCHAR},
       </if>
       <if test="joinState != null" >
         #{joinState,jdbcType=VARCHAR},
+      </if>
+      <if test="clockState != null" >
+        #{clockState,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="hour != null" >
+        #{hour,jdbcType=VARCHAR},
+      </if>
+      <if test="miuntes != null" >
+        #{miuntes,jdbcType=VARCHAR},
+      </if>
+      <if test="daysofweek != null" >
+        #{daysofweek,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -95,11 +135,26 @@
       <if test="modifyTime != null" >
         modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="planfinishTime != null" >
-        planfinish_time = #{planfinishTime,jdbcType=TIMESTAMP},
+      <if test="clocksettingState != null" >
+        clocksetting_state = #{clocksettingState,jdbcType=VARCHAR},
       </if>
       <if test="joinState != null" >
         join_state = #{joinState,jdbcType=VARCHAR},
+      </if>
+      <if test="clockState != null" >
+        clock_state = #{clockState,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="hour != null" >
+        hour = #{hour,jdbcType=VARCHAR},
+      </if>
+      <if test="miuntes != null" >
+        miuntes = #{miuntes,jdbcType=VARCHAR},
+      </if>
+      <if test="daysofweek != null" >
+        daysofweek = #{daysofweek,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -110,37 +165,77 @@
       course_id = #{courseId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      planfinish_time = #{planfinishTime,jdbcType=TIMESTAMP},
-      join_state = #{joinState,jdbcType=VARCHAR}
+      clocksetting_state = #{clocksettingState,jdbcType=VARCHAR},
+      join_state = #{joinState,jdbcType=VARCHAR},
+      clock_state = #{clockState,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      hour = #{hour,jdbcType=VARCHAR},
+      miuntes = #{miuntes,jdbcType=VARCHAR},
+      daysofweek = #{daysofweek,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
-  <!-- 以下自定义 -->
+
+    <!-- 以下自定义 -->
   <select id="queryUJPByIds" resultMap="BaseResultMap" parameterType="java.lang.Long">
-  	select
-  		<include refid="Base_Column_List" />
+    select
+      <include refid="Base_Column_List" />
     from 
-    	us_user_join_plan
+      us_user_join_plan
     where 
-    	user_id = #{userId,jdbcType=BIGINT} and course_id = #{courseId,jdbcType=BIGINT};
+      user_id = #{userId,jdbcType=BIGINT} and course_id = #{courseId,jdbcType=BIGINT};
   </select>
   
   <select id="queryJoinListByuId" resultType="map" parameterType="java.lang.Long">
+    select
+      ujp.id As joinPlanId,
+      course.id,
+      course.name,
+      ujp.create_time,
+      ujp.clocksetting_state,
+      cover.picurl
+    from
+      us_user_join_plan ujp 
+      left join
+      us_course course
+      on ujp.course_id = course.id
+      inner join us_cover cover 
+      on cover.id = course.cover_id
+    where
+      ujp.user_id = #{userId,jdbcType=BIGINT} and ujp.join_state = 1
+    order by ujp.create_time desc;
+  </select>
+  
+  <update id="settingClockById" parameterType="com.eduonline.model.UserJoinPlan">
+    update 
+      us_user_join_plan
+    set 
+      clock_state = #{clockState,jdbcType=VARCHAR},
+      clocksetting_state = #{clocksettingState,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR},
+      hour = #{hour,jdbcType=VARCHAR},
+      miuntes = #{miuntes,jdbcType=VARCHAR},
+      daysofweek = #{daysofweek,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="queryClockByuserId" resultType="map" parameterType="java.lang.Long">
   	select
-		course.id,
+		ujp.id,
+		cover.picurl,
 		course.name,
-		ujp.create_time,
-		ujp.planfinish_time,
-		cover.picurl
+		ujp.content,
+		ujp.hour,
+		ujp.miuntes,
+		ujp.daysOfweek,
+		ujp.clock_state
 	from
-		us_user_join_plan ujp 
-		left join
-		us_course course
-		on ujp.course_id = course.id
-		inner join us_cover cover 
+		us_user_join_plan ujp
+		left join us_course course
+		on course.id = ujp.course_id
+		inner join us_cover cover
 		on cover.id = course.cover_id
 	where
-		ujp.user_id = #{userId,jdbcType=BIGINT} and ujp.join_state = 1
-	order by ujp.create_time desc;
+		ujp.clocksetting_state = 1 and ujp.user_id = #{userId,jdbcType=BIGINT}
   </select>
 </mapper>

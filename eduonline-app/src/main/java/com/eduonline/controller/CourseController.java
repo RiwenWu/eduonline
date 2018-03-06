@@ -275,28 +275,6 @@ public class CourseController {
 	}
 	
 	/**
-	 * 根据userId获取加入课程列表
-	 * @param uId
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/queryJoinCourseListById.json")
-	public Map<String, Object> queryJoinCourseListById(String userId) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		Long uId = Long.parseLong(userId);
-		map.put("bool", false);
-		
-		try {
-			List<Map<String, Object>> joinCourseList = userJoinPlanService.queryJoinListByuId(uId);
-			map.put("data", joinCourseList);
-			map.put("bool", true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return map;
-	}
-	
-	/**
 	 * 根据courseId获取视频列表
 	 * @param courseId
 	 * @return

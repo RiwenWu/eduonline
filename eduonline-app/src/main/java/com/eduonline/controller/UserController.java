@@ -21,6 +21,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.eduonline.model.User;
 import com.eduonline.service.UserService;
 
+
+/**   
+ *    
+ * 项目名称：eduonline-app   
+ * 类名称：UserController   
+ * 类描述：   
+ * 创建人：wrw   
+ * 创建时间：2018年3月5日 上午2:43:51   
+ * @version        
+ */
 @Controller
 public class UserController {
 

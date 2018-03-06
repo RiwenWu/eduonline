@@ -36,4 +36,8 @@ public interface UserJoinPlanMapper {
      * @throws Exception
      */
     List<Map<String, Object>> queryJoinListByuId(@Param("userId")Long uId) throws Exception;
+    
+    int settingClockById(UserJoinPlan record) throws Exception;
+    
+    List<Map<String ,Object>> queryClockByuserId(Long userId) throws Exception;
 }

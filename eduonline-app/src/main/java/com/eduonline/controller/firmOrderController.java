@@ -20,6 +20,16 @@ import com.eduonline.service.OrderCourseService;
 import com.eduonline.service.OrderService;
 import com.eduonline.service.ShopCarService;
 
+/**   
+ *    
+ * 项目名称：eduonline-app   
+ * 类名称：firmOrderController   
+ * 类描述：   
+ * 创建人：wrw   
+ * 创建时间：2018年3月5日 上午2:43:56   
+ * @version        
+ */
+
 @Controller
 public class firmOrderController {
 

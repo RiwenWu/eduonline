@@ -32,4 +32,15 @@ public class UserJoinPlanServiceTest {
 			}
 		}
 	}
+	
+	@Test
+	public void queryClockByuserIdTest() throws Exception {
+		List<Map<String, Object>> joinCourseList = new ArrayList<Map<String, Object>>();
+		joinCourseList = userJoinPlanService.queryClockByuserId(14L);
+		for(Map<String, Object> map : joinCourseList) {
+			for (String k : map.keySet()) {
+				System.out.println("key = " + k + " ,value = " + map.get(k));
+			}
+		}
+	}
 }

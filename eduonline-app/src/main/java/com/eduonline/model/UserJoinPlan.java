@@ -13,9 +13,19 @@ public class UserJoinPlan {
 
     private Date modifyTime;
 
-    private Date planfinishTime;
+    private String clocksettingState;
 
     private String joinState;
+
+    private String clockState;
+
+    private String content;
+
+    private String hour;
+
+    private String miuntes;
+
+    private String daysofweek;
 
     public Long getId() {
         return id;
@@ -57,12 +67,12 @@ public class UserJoinPlan {
         this.modifyTime = modifyTime;
     }
 
-    public Date getPlanfinishTime() {
-        return planfinishTime;
+    public String getClocksettingState() {
+        return clocksettingState;
     }
 
-    public void setPlanfinishTime(Date planfinishTime) {
-        this.planfinishTime = planfinishTime;
+    public void setClocksettingState(String clocksettingState) {
+        this.clocksettingState = clocksettingState == null ? null : clocksettingState.trim();
     }
 
     public String getJoinState() {
@@ -71,5 +81,45 @@ public class UserJoinPlan {
 
     public void setJoinState(String joinState) {
         this.joinState = joinState == null ? null : joinState.trim();
+    }
+
+    public String getClockState() {
+        return clockState;
+    }
+
+    public void setClockState(String clockState) {
+        this.clockState = clockState == null ? null : clockState.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour == null ? null : hour.trim();
+    }
+
+    public String getMiuntes() {
+        return miuntes;
+    }
+
+    public void setMiuntes(String miuntes) {
+        this.miuntes = miuntes == null ? null : miuntes.trim();
+    }
+
+    public String getDaysofweek() {
+        return daysofweek;
+    }
+
+    public void setDaysofweek(String daysofweek) {
+        this.daysofweek = daysofweek == null ? null : daysofweek.trim();
     }
 }
