@@ -19,6 +19,7 @@ import com.eduonline.service.CourseService;
 import com.eduonline.service.OrderCourseService;
 import com.eduonline.service.OrderService;
 import com.eduonline.service.ShopCarService;
+import com.eduonline.service.UserOwnCoursesService;
 
 /**   
  *    
@@ -41,6 +42,8 @@ public class firmOrderController {
 	private OrderService orderService;
 	@Autowired
 	private OrderCourseService orderCourseService;
+	@Autowired
+	private UserOwnCoursesService userOwnCourseService;
 
 	/**
 	 * 根据courseIds获取课程列表
@@ -215,6 +218,8 @@ public class firmOrderController {
 				sc.setCourseId(cId);
 				shopCarService.selectAndUpdate(sc);
 			}
+			map.put("orderId", order.getId());
+			map.put("CourseIds", listId);
 			map.put("bool", true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -298,7 +303,62 @@ public class firmOrderController {
 		}
 		return map;
 	}
+	
+	/**
+	 * 点击立即支付
+	 * @param orderId
+	 * @param userId
+	 * @param courseIds
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/payNow.json")
+	private Map<String, Object> payNow(String orderId, String payMethod, String userId, String courseIds){
+		Map<String, Object> map = new HashMap<String, Object>();
+		Order order = new Order();
+		map.put("bool", false);
+		//String 转 long
+		Long oId = Long.parseLong(orderId);
+		Long uId = Long.parseLong(userId);
+		try {
+			//先修改订单的状态
+			order.setId(oId);
+			order.setState("1");
+			order.setPaymentType(payMethod);
+			orderService.updateByPrimaryKeySelective(order);
+			//再创建用户和课程的联系
+			userOwnCourseService.markUserCourse(uId, courseIds);
+			map.put("bool", true);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
 
+	/**
+	 * 查询用户是否已购买
+	 * @param userId
+	 * @param courseId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/findUserIsOwn.json")
+	public Map<String, Object> findUserIsOwn(String userId, String courseId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("bool", false);
+		//String 转 Long
+		Long uId = Long.parseLong(userId);
+		Boolean isOwn;
+		try {
+			isOwn = userOwnCourseService.findUserIsOwn(uId, courseId);
+			map.put("isOwn", isOwn);
+			map.put("bool", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
 	// 选择截取的位置
 	public static String sub(String str, int start, int end) {
 		String result = null;

@@ -15,6 +15,10 @@ public class Order {
 
     private Long summoney;
 
+    private String paymentType;
+
+    private Date modifyTime;
+
     public Long getId() {
         return id;
     }
@@ -61,5 +65,21 @@ public class Order {
 
     public void setSummoney(Long summoney) {
         this.summoney = summoney;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType == null ? null : paymentType.trim();
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }

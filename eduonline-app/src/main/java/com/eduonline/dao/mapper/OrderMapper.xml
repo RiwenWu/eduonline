@@ -8,9 +8,11 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="summoney" property="summoney" jdbcType="DECIMAL" />
+    <result column="payment_type" property="paymentType" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, orderno, user_id, create_time, state, summoney
+    id, orderno, user_id, create_time, state, summoney, payment_type, modify_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -24,11 +26,11 @@
   </delete>
   <insert id="insert" parameterType="com.eduonline.model.Order" >
     insert into us_order (id, orderno, user_id, 
-      create_time, state, summoney
-      )
+      create_time, state, summoney, 
+      payment_type, modify_time)
     values (#{id,jdbcType=BIGINT}, #{orderno,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}, #{summoney,jdbcType=DECIMAL}
-      )
+      #{createTime,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}, #{summoney,jdbcType=DECIMAL}, 
+      #{paymentType,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.eduonline.model.Order" >
     insert into us_order
@@ -51,6 +53,12 @@
       <if test="summoney != null" >
         summoney,
       </if>
+      <if test="paymentType != null" >
+        payment_type,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -70,6 +78,12 @@
       </if>
       <if test="summoney != null" >
         #{summoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentType != null" >
+        #{paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -91,6 +105,12 @@
       <if test="summoney != null" >
         summoney = #{summoney,jdbcType=DECIMAL},
       </if>
+      <if test="paymentType != null" >
+        payment_type = #{paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -100,48 +120,50 @@
       user_id = #{userId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       state = #{state,jdbcType=VARCHAR},
-      summoney = #{summoney,jdbcType=DECIMAL}
+      summoney = #{summoney,jdbcType=DECIMAL},
+      payment_type = #{paymentType,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
+
   <!-- 以下自定义 -->
   <select id="queryOrderListByuserId" resultMap="BaseResultMap">
-  	select
-  		<include refid="Base_Column_List" />
-  	from
-  		us_order
-  	where
-  		user_id = #{userId,jdbcType=BIGINT}
-  		<if test="state != null">
-  			and state = #{state,jdbcType=VARCHAR}
-  		</if>
-  	order by create_time desc
+    select
+      <include refid="Base_Column_List" />
+    from
+      us_order
+    where
+      user_id = #{userId,jdbcType=BIGINT}
+      <if test="state != null">
+        and state = #{state,jdbcType=VARCHAR}
+      </if>
+    order by create_time desc
   </select>
   
   <select id="queryCourseListByorderId" resultType="map">
-  	select
-		temp_table.courseId,
-		temp_table.courseName,
-		temp_table.courseSalary,
-		temp_table.coursePic,
-		order1.state
-	from
-		 (
-			select
-				course.id As courseId,
-				course.name As courseName,
-				course.salary As courseSalary,
-				cover.picurl As coursePic
-			from
-				us_course course
-				left join us_cover cover
-				on course.cover_id = cover.id
-		) temp_table
-		left join us_order_course uoc
-		on temp_table.courseId = uoc.course_id
-		inner join us_order order1
-		on uoc.order_id = order1.id
-	where
-		order1.id = #{id,jdbcType=BIGINT}
+    select
+      temp_table.courseId,
+      temp_table.courseName,
+      temp_table.courseSalary,
+      temp_table.coursePic,
+      order1.state
+    from
+       (
+        select
+          course.id As courseId,
+          course.name As courseName,
+          course.salary As courseSalary,
+          cover.picurl As coursePic
+        from
+          us_course course
+          left join us_cover cover
+          on course.cover_id = cover.id
+      ) temp_table
+      left join us_order_course uoc
+      on temp_table.courseId = uoc.course_id
+      inner join us_order order1
+      on uoc.order_id = order1.id
+    where
+      order1.id = #{id,jdbcType=BIGINT}
   </select>
 </mapper>
