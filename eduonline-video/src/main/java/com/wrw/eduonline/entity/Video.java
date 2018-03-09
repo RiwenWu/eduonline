@@ -17,6 +17,8 @@ public class Video {
 
     private Long attachmentId;
 
+    private String state;
+
     public Long getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class Video {
 
     public void setAttachmentId(Long attachmentId) {
         this.attachmentId = attachmentId;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
     }
 }

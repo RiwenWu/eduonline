@@ -4,14 +4,15 @@
   <resultMap id="BaseResultMap" type="com.wrw.eduonline.entity.Video" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="DATE" />
-    <result column="modify_time" property="modifyTime" jdbcType="DATE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
     <result column="path" property="path" jdbcType="VARCHAR" />
     <result column="examine_state" property="examineState" jdbcType="VARCHAR" />
     <result column="attachment_id" property="attachmentId" jdbcType="BIGINT" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, title, create_time, modify_time, path, examine_state, attachment_id
+    id, title, create_time, modify_time, path, examine_state, attachment_id, state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -26,12 +27,12 @@
   <insert id="insert" parameterType="com.wrw.eduonline.entity.Video" >
     insert into us_video (id, title, create_time, 
       modify_time, path, examine_state, 
-      attachment_id)
-    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, 
-      #{modifyTime,jdbcType=DATE}, #{path,jdbcType=VARCHAR}, #{examineState,jdbcType=VARCHAR}, 
-      #{attachmentId,jdbcType=BIGINT})
+      attachment_id, state)
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{path,jdbcType=VARCHAR}, #{examineState,jdbcType=VARCHAR}, 
+      #{attachmentId,jdbcType=BIGINT}, #{state,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.wrw.eduonline.entity.Video" >
+  <insert id="insertSelective" parameterType="com.wrw.eduonline.entity.Video" >
     insert into us_video
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -55,6 +56,9 @@
       <if test="attachmentId != null" >
         attachment_id,
       </if>
+      <if test="state != null" >
+        state,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,10 +68,10 @@
         #{title,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="modifyTime != null" >
-        #{modifyTime,jdbcType=DATE},
+        #{modifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="path != null" >
         #{path,jdbcType=VARCHAR},
@@ -78,6 +82,9 @@
       <if test="attachmentId != null" >
         #{attachmentId,jdbcType=BIGINT},
       </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.wrw.eduonline.entity.Video" >
@@ -87,10 +94,10 @@
         title = #{title,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=DATE},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="modifyTime != null" >
-        modify_time = #{modifyTime,jdbcType=DATE},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="path != null" >
         path = #{path,jdbcType=VARCHAR},
@@ -101,17 +108,39 @@
       <if test="attachmentId != null" >
         attachment_id = #{attachmentId,jdbcType=BIGINT},
       </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wrw.eduonline.entity.Video" >
     update us_video
     set title = #{title,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=DATE},
-      modify_time = #{modifyTime,jdbcType=DATE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       path = #{path,jdbcType=VARCHAR},
       examine_state = #{examineState,jdbcType=VARCHAR},
-      attachment_id = #{attachmentId,jdbcType=BIGINT}
+      attachment_id = #{attachmentId,jdbcType=BIGINT},
+      state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <!-- 以下自定义 -->
+  <select id="queryVideoListByCourseId" resultType="map">
+    select
+      video.id,
+      video.title,
+      video.create_time,
+      video.path,
+      video.state
+    from
+      us_video video
+      left join us_course_video ucv
+      on ucv.video_id = video.id
+      inner join us_course course
+      on ucv.course_id = course.id
+    where
+      ucv.course_id = #{courseId,jdbcType=BIGINT}
+  </select>
 </mapper>

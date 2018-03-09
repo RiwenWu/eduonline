@@ -21,4 +21,10 @@ public interface CourseService {
 	 * @throws Exception
 	 */
 	List<Map<String, Object>> queryCourseListBycommendState(@Param("commendState") String commendState, @Param("inputValue")String inputValue) throws Exception;
+
+	List<Map<String, Object>> queryCourselistByPage(Integer pageNo, Integer pageSize, String inputValue) throws Exception;
+	
+	List<Map<String, Object>> queryCourselistByInputValue(String inputValue) throws Exception;
+
+	Map<String, Object> queryCourseById(Long id) throws Exception;
 }

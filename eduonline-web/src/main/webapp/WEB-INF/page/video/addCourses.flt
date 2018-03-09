@@ -354,7 +354,6 @@ var courseSalary;//课程售价
 			var data;
 			if (freeState == "1"){
 		  		courseSalary = $('#salary').val();
-				console.log(courseSalary)
 				data = {"courseName": courseName, "sortId": sortId, "freeState": freeState, "courseIntroduce": courseIntroduct, "salary": courseSalary};
 			} else {
 				data = {"courseName": courseName, "sortId": sortId, "freeState": freeState, "courseIntroduce": courseIntroduct};

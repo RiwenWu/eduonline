@@ -125,4 +125,21 @@
       state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <!-- 以下自定义 -->
+  <select id="queryOfflineCourseByCourseId" resultType="map">
+  	select
+  		offlinecourse.id,
+  		offlinecourse.title,
+  		offlinecourse.start_time,
+  		offlinecourse.end_time,
+  		offlinecourse.place,
+  		offlinecourse.detail
+  	from 
+  		us_offlinecourse offlinecourse
+  		left join us_course course
+  		on course.offlinecourse_id = offlinecourse.id
+  	where
+  		course.id = #{courseId,jdbcType=BIGINT}
+  </select>
 </mapper>

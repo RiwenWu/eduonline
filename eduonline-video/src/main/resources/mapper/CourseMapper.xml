@@ -165,31 +165,86 @@
   <!-- 以下自定义 -->
   <select id="queryCourseListBycommendState" resultType="map">
     select     
-    course.id,     
-    course.name,     
-    course.free_state,     
-    cover.picurl,
-    tempTable.sortName
-  from     
-    us_course course     
-    left join us_cover cover     
-    on course.cover_id = cover.id
-    inner join (
-      select 
-        sort.name As sortName,
-        course.id As courseId
-      from 
-        us_course_sort ucs
-        left join us_course course
-        on course.id = ucs.course_id
-        inner join us_sort sort
-        on sort.id = ucs.sort_id
-    ) tempTable 
-    on course.id = tempTable.courseId
-  where
-    course.commend_state = #{commendState,jdbcType=VARCHAR}
-    <if test="inputValue != null">
-      and course.name like concat(concat('%',#{inputValue,jdbcType=VARCHAR}),'%') 
-    </if>
+	    course.id,     
+	    course.name,     
+	    course.free_state,     
+	    cover.picurl,
+	    tempTable.sortName
+	  from     
+	    us_course course     
+	    left join us_cover cover     
+	    on course.cover_id = cover.id
+	    inner join (
+	      select 
+	        sort.name As sortName,
+	        course.id As courseId
+	      from 
+	        us_course_sort ucs
+	        left join us_course course
+	        on course.id = ucs.course_id
+	        inner join us_sort sort
+	        on sort.id = ucs.sort_id
+	    ) tempTable 
+	    on course.id = tempTable.courseId
+	  where
+	    course.commend_state = #{commendState,jdbcType=VARCHAR}
+	    <if test="inputValue != null">
+	      and course.name like concat(concat('%',#{inputValue,jdbcType=VARCHAR}),'%') 
+	    </if>
   </select>
+  
+  <select id="queryCourselistByPage" resultType="map">
+  	select
+  		course.id,
+  		course.name,
+  		cover.picurl
+  	from
+  		us_course course
+  		left join us_cover cover
+  		on course.cover_id = cover.id
+	  	order by course.create_time desc
+	  <where>
+	  	<if test=" inputValue != null">
+	  		course.name like concat(concat('%',#{inputValue,jdbcType=VARCHAR}),'%')
+	  	</if>
+	  </where>
+	  limit #{start}, #{end};
+  </select>
+  
+  <select id="queryCourselistByInputValue" resultType="map">
+  	select
+  		course.id,
+  		course.name,
+  		cover.picurl
+  	from
+  		us_course course
+  		left join us_cover cover
+  		on course.cover_id = cover.id
+	  	order by course.create_time desc
+	  <where>
+	  	<if test=" inputValue != null">
+	  		course.name like concat(concat('%',#{inputValue,jdbcType=VARCHAR}),'%')
+	  	</if>
+	  </where>
+  </select>
+  
+  <select id="queryCourseById" resultType="map" parameterType="java.lang.Long">
+  	select
+  		course.id,
+  		course.name,
+  		course.free_state,
+  		course.salary,
+  		course.introduce,
+  		cover.picurl,
+  		ucs.sort_id
+  	from
+  		us_course course,
+  		us_cover cover,
+  		us_course_sort ucs
+  	where
+  		course.cover_id = cover.id
+  		and course.id = ucs.course_id
+  		and course.id = #{id,jdbcType=BIGINT}
+  </select>
+  
 </mapper>

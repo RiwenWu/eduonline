@@ -1,5 +1,7 @@
 package com.wrw.eduonline.dao;
 
+import java.util.Map;
+
 import com.wrw.eduonline.entity.OfflineCourse;
 
 public interface OfflineCourseMapper {
@@ -14,4 +16,6 @@ public interface OfflineCourseMapper {
     int updateByPrimaryKeySelective(OfflineCourse record);
 
     int updateByPrimaryKey(OfflineCourse record);
+    
+    Map<String, Object> queryOfflineCourseByCourseId(Long courseId) throws Exception;
 }

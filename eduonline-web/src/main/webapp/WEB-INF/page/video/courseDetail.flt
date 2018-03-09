@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>课程分类</title>
+    <#include "header.flt">
+    <style>
+    .layui-upload-list{
+    	padding-left:110px;
+    }
+    </style>
+</head>
+
+<body>
+    <button class="layui-btn" onclick="javascript:window.location.href = '../allCourses.flt'">返回</button>
+    <br/>
+    <form class="layui-form" action="">
+    	<div class="layui-form-item layui-hide">
+            <label class="layui-form-label">id</label>
+            <div class="layui-input-inline">
+                <input type="text" id="courseId" class="layui-input" value="${Course.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">课程名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" id="courseName" lay-verify="required|title" autocomplete="off" placeholder="请输入名称" class="layui-input" lay-filter="courseTitle" value="${Course.name}">
+            </div>
+        </div>
+        
+        <#if Course.free_state == "0" >
+	        <div class="layui-form-item">
+	            <label class="layui-form-label">是否免费</label>
+	            <div class="layui-input-block">
+	                <input type="radio" name="freeState" value="0" title="免费" lay-filter="freeState" checked>
+	                <input type="radio" name="freeState" value="1" title="收费" lay-filter="freeState">
+	            </div>
+	        </div>
+	        <div class="layui-form-item layui-hide">
+	            <label class="layui-form-label">价格</label>
+	            <div class="layui-input-inline" style="width: 100px;">
+	                <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input" id="salary">
+	            </div>
+	        </div>
+	    <#elseif Course.free_state == "1" >
+	    	<div class="layui-form-item">
+	            <label class="layui-form-label">是否免费</label>
+	            <div class="layui-input-block">
+	                <input type="radio" name="freeState" value="0" title="免费" lay-filter="freeState">
+	                <input type="radio" name="freeState" value="1" title="收费" lay-filter="freeState" checked>
+	            </div>
+	        </div>
+	        <div class="layui-form-item">
+	            <label class="layui-form-label">价格</label>
+	            <div class="layui-input-inline" style="width: 100px;">
+	                <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input" id="salary" value="${Course.salary}">
+	            </div>
+	        </div>
+	    </#if> 
+	    
+        <div class="layui-form-item">
+            <label class="layui-form-label">上传封面</label>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn layui-btn-disabled" id="test1">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="imgdemo1" src="${request.contextPath}/${Course.picurl}" />
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">课程介绍</label>
+            <div class="layui-input-block">
+                <textarea id="courseIntroduct" placeholder="请输入内容" class="layui-textarea" lay-verify="required" >${Course.introduce}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+            	<button class="layui-btn layui-btn-disabled" lay-submit="" lay-filter="demo1" id="updateCourse">修改</button>
+                <button class="layui-btn" id="editCourse">编辑</button>
+            </div>
+        </div>
+    </form>
+    
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+	  <legend>课程视频</legend>
+	</fieldset>
+	
+		<div class="layui-upload">
+		  <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button> 
+		  <div class="layui-upload-list">
+		    <table class="layui-table">
+		      <thead>
+		        <tr><th>章节名称</th>
+		        	<th width="20%">文件名</th>
+			        <th>大小</th>
+			        <th>状态</th>
+			        <th>操作</th>
+		      </tr></thead>
+		      <tbody id="demoList"></tbody>
+		    </table>
+		  </div>
+		  <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+		</div> 
+	<table class="layui-hide" id="LAY_table_user" lay-filter="demo" ></table>
+	
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+	  <legend>线下</legend>
+	</fieldset>
+	
+		<form class="layui-form" action="" lay-filter="setpTwo">
+			<#if (OfflineCourse.id)?? >
+				<div class="layui-form-item layui-hide">
+		            <label class="layui-form-label">id</label>
+		            <div class="layui-input-inline">
+		                <input type="text" id="courseId" class="layui-input" value="${OfflineCourse.id}">
+		            </div>
+		        </div>
+	            <div class="layui-form-item">
+	                <label class="layui-form-label">主题</label>
+	                <div class="layui-input-inline">
+	                    <input type="text" name="title" id="title" lay-verify="required|title" autocomplete="off" placeholder="请输入名称" class="layui-input" lay-filter="courseTitle" value="${OfflineCourse.title}">
+	                </div>
+	            </div>
+				<div class="layui-form-item">
+			      <label class="layui-form-label">开始和结束时间</label>
+			      <div class="layui-input-inline">
+			        <input type="text" class="layui-input" lay-verify="required" id="startAndEnd" placeholder="开始 到 结束" value="${OfflineCourse.start_time?string["yyyy/MM/dd"]} ~ ${OfflineCourse.end_time?string["yyyy/MM/dd"]}">
+			      </div>
+			    </div>
+			    <div class="layui-form-item">
+	                <label class="layui-form-label">地点</label>
+	                <div class="layui-input-inline">
+	                    <input type="text" name="title" id="place" lay-verify="required" autocomplete="off" placeholder="请输入地点" class="layui-input" value="${OfflineCourse.place}">
+	                </div>
+	            </div>
+	            <div class="layui-form-item layui-form-text">
+	                <label class="layui-form-label">详情描述</label>
+	                <div class="layui-input-block">
+	                    <textarea id="detail" placeholder="请输入内容" class="layui-textarea" lay-verify="required">${OfflineCourse.detail}</textarea>
+	                </div>
+	            </div>
+	  
+	            <div class="layui-form-item">
+	                <div class="layui-input-block">
+	                    <button class="layui-btn layui-btn-disabled" lay-submit="" lay-filter="updateOffLineCourse" id="UpdataOfflineCourse">修改</button>
+	                    <button class="layui-btn" id="editOfflineCourse">编辑</button>
+	                </div>
+	            </div>
+	        <#else>
+	        	<form class="layui-form" action="" lay-filter="setpTwo">
+            <div class="layui-form-item">
+                <label class="layui-form-label">主题</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" id="title" lay-verify="required|title" autocomplete="off" placeholder="请输入名称" class="layui-input" lay-filter="courseTitle">
+                </div>
+            </div>
+			<div class="layui-form-item">
+		      <label class="layui-form-label">开始和结束时间</label>
+		      <div class="layui-input-inline">
+		        <input type="text" class="layui-input" lay-verify="required" id="startAndEnd" placeholder="开始 到 结束">
+		      </div>
+		    </div>
+		    <div class="layui-form-item">
+                <label class="layui-form-label">地点</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" id="place" lay-verify="required" autocomplete="off" placeholder="请输入地点" class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">详情描述</label>
+                <div class="layui-input-block">
+                    <textarea id="detail" placeholder="请输入内容" class="layui-textarea" lay-verify="required"></textarea>
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="addOffLineCourse">添加</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+	        </#if>
+        </form>
+	
+	<script type="text/html" id="VideoOption">
+	  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="playVideo">查看</a>
+	  <a class="layui-btn layui-btn-xs" lay-event="editVideo">修改</a>
+	  <a class="layui-btn layui-btn-xs" lay-event="delVideo">删除</a>
+	</script>
+    <script>
+    var form;
+    //三级联动选择框
+    var province; //编辑需要的省
+    var city; //编辑需要的市
+    var district; //编辑需要的县/区
+    var courseName; //课程名称
+    var sortId; //分类ID
+    var freeState; //是否免费
+    var courseIntroduct; //课程介绍
+    var courseSalary; //课程售价
+
+    layui.use(['form', 'upload', 'layedit', 'laydate', 'table'], function() {
+
+                form = layui.form;
+                var laydate = layui.laydate;
+                var layer = layui.layer,
+                    layedit = layui.edit,
+                    $ = layui.jquery,
+                    upload = layui.upload,
+                    table = layui.table;
+
+                laydate.render({
+                    elem: '#startAndEnd',
+                    type: 'date',
+                    range: '~',
+                    format: 'yyyy/M/d'
+                });
+        
+        //监听添加课程提交
+	    form.on('submit(demo1)', function(data) {
+	        updateCourse();
+	        return false;
+	    });
+	    
+	    //监听添加课程提交
+	    form.on('submit(updateOffLineCourse)', function(data) {
+	        updateOfflineCourse();
+	        return false;
+	    });
+	    
+	    //监听线下课程提交
+	    form.on('submit(addOffLineCourse)', function(data) {
+	    	addOffLineCourse();
+	    	return false;
+	    });
+	    
+	    //监听单选框
+		form.on('radio(freeState)', function(data){
+		  freeState = data.value;
+		  if (data.value == 1) {
+		  	$('#salary').parent("div").parent("div").removeClass('layui-hide');
+		  	$('#salary').attr("lay-verify", "required|salary");
+		  } else {
+		  	$('#salary').parent("div").parent("div").addClass('layui-hide');
+		  	$('#salary').removeAttr("lay-verify", "required|salary");
+		  }
+		});
+		
+		//普通图片上传
+	    var uploadInst = upload.render({
+	        elem: '#test1',
+	        url: '../addCourse/cover_save.json',
+	        method: 'post',
+	        title: '请上传课程封面',
+	        before: function(obj) {
+	            //预读本地文件示例，不支持ie8
+	            obj.preview(function(index, file, result) {
+	                $('#imgdemo1').attr('src', result); //图片链接（base64）
+	            });
+	        },
+	        done: function(res) {
+	            //如果上传失败
+	            if (res.code > 0) {
+	                return layer.msg('上传失败');
+	            }
+	            //上传成功
+	            if (res.code = 0) {
+	                return layer.msg('上传成功');
+	            }
+	        },
+	        error: function() {
+	            //演示失败状态，并实现重传
+	            var demoText = $('#demoText');
+	            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+	            demoText.find('.demo-reload').on('click', function() {
+	                uploadInst.upload();
+	            });
+	        }
+	  	});
+	  	
+	  	 //方法级渲染
+	    table.render({
+	    	id: 'videoTable',
+	        elem: '#LAY_table_user',
+	        url: '../courseManage/queryCourseById.json',
+	        where: {courseId: ${Course.id}},
+	        cols: [
+	            [
+	                { checkbox: true, fixed: true },
+	                { field: 'title', title: '课程名称', width: 120, sort: true, fixed: true }, 
+	                { field: 'create_time', title: '上传时间', width: 160 },
+	                { field: 'state', title: '状态', width: 160 },
+	                {fixed: 'right', width:178, align:'center', toolbar: '#VideoOption'}
+	            ]
+	        ],
+	        height: 315
+	    });
+	    
+	      //监听工具条
+		  table.on('tool(demo)', function(obj){
+		    var data = obj.data;
+		    if(obj.event === 'playVideo'){
+		      layer.open({
+				  type: 2, 
+				  skin: 'admi',
+				  content: '${request.contextPath}/'+data.path
+				});
+		    } else if(obj.event === 'editVideo'){
+		       layer.open({
+				  type: 1, 
+				  skin: 'admi',
+				  content: $(".bomb_box1")
+				});
+		    } else if(obj.event === 'delVideo'){
+		    	layer.confirm('确定要删除？', {
+				  btn: ['确定', '取消'] //可以无限个按钮
+				}, function(index, layero){
+				   updateVideoState(data.id, 1);
+				}, function(index){
+				  //按钮【按钮二】的回调
+				});
+		    }
+		  });
+		
+		
+		//多文件列表示例
+		  var demoListView = $('#demoList')
+		  ,uploadListIns = upload.render({
+		    elem: '#testList'
+		    ,url: '../courseManage/videoSaveAgain.json'
+		    ,data: {courseId: ${Course.id}} //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+		    ,accept: 'video'
+		    ,size: 1024*1024*1024
+		    ,multiple: true
+		    ,auto: false
+		    ,bindAction: '#testListAction'
+		    ,befort: function(obj){
+		    	
+		    }
+		    ,choose: function(obj){   
+		      var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+		      //读取本地文件
+		      obj.preview(function(index, file, result){
+		        var tr = $(['<tr id="upload-'+ index +'">'
+		          ,'<td><input type="text" name="folderCode" autocomplete="off" placeholder="不填写时默认文件名为章节名称" class="layui-input"></td>'
+		          ,'<td>'+ file.name +'</td>'
+		          ,'<td>'+ (file.size/1014/1024).toFixed(1) +'M</td>'
+		          ,'<td>等待上传</td>'
+		          ,'<td>'
+		            ,'<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>'
+		            ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
+		          ,'</td>'
+		        ,'</tr>'].join(''));
+		        
+		        //单个重传
+		        tr.find('.demo-reload').on('click', function(){
+		          obj.upload(index, file);
+		        });
+		        
+		        //删除
+		        tr.find('.demo-delete').on('click', function(){
+		          delete files[index]; //删除对应的文件
+		          tr.remove();
+		          uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+		        });
+		        
+		        demoListView.append(tr);
+		      });
+		    }
+		    ,done: function(res, index, upload){
+		      if(res.code == 0){ //上传成功
+		      	//上传章节名称
+		      	saveVideoName(index);
+		        var tr = demoListView.find('tr#upload-'+ index)
+		        ,tds = tr.children();
+		        tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
+		        tds.eq(4).html(''); //清空操作
+		        return delete this.files[index]; //删除文件队列已经上传成功的文件
+		      }
+		      this.error(index, upload);
+		    }
+		    ,error: function(index, upload){
+		      var tr = demoListView.find('tr#upload-'+ index)
+		      ,tds = tr.children();
+		      tds.eq(3).html('<span style="color: #FF5722;">上传失败</span>');
+		      tds.eq(4).find('.demo-reload').removeClass('layui-hide'); //显示重传
+		    }
+		  });
+		  
+      });
+      
+      
+      //点击编辑按钮
+      $("#editCourse").click(function() {
+      		if($('#updateCourse').hasClass("layui-btn-disabled")){
+      			$('#updateCourse').removeClass("layui-btn-disabled");
+      			$('#test1').removeClass("layui-btn-disabled");
+      		}else {
+      			$('#updateCourse').addClass("layui-btn-disabled");
+      			$('#test1').addClass("layui-btn-disabled");
+      		}
+	        return false;	
+      });
+      
+      //点击编辑按钮
+      $("#editOfflineCourse").click(function() {
+      		if($('#UpdataOfflineCourse').hasClass("layui-btn-disabled")){
+      			$('#UpdataOfflineCourse').removeClass("layui-btn-disabled");
+      		}else {
+      			$('#UpdataOfflineCourse').addClass("layui-btn-disabled");
+      		}
+	        return false;	
+      });
+      
+      function updateCourse() {
+      		var id = $('#courseId').val();
+      		courseName = $('#courseName').val();
+			courseIntroduct = $('#courseIntroduct').val();
+	
+			
+			$.ajax({
+				url:'../courseManage/updateCourseById.json',
+				data: {"courseId": id, "courseName": courseName, "courseIntroduce": courseIntroduct , "freeState": freeState, "salary": courseSalary},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.bool){
+						layer.msg("修改成功");
+					} else{
+						if (data.msg != null) {
+							layer.msg(data.msg);
+						} else{
+							layer.msg('出现未知错误，请联系我们');
+						}
+					}
+				}
+			})
+      }
+      
+      function saveVideoName(index) {
+			var temp_td = $('#upload-'+index + ' td:first');
+			var title = temp_td.find("input").val();
+			if (title == null || title == ""){
+				return;
+			}
+			$.ajax({
+				url:'../addCourse/video_name_save.json',
+				data:{"videoName": title},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.bool){
+						$("#upload-" + index + " td:first").find("input").attr("disabled",true);
+					} else{
+						layer.msg('出现未知错误，请联系我们');
+					}
+				}
+			})
+		}
+      
+      //删除视频
+      function updateVideoState(id, state){
+      	$.ajax({
+				url:'../courseManage/updateVideoStateById.json',
+				data:{"videoId": id, "state": state},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.bool){
+						layer.msg('删除成功');
+					} else{
+						layer.msg('出现未知错误，请联系我们');
+					}
+				}
+			})
+      }
+      
+      //提交线下课程
+      function addOffLineCourse(){
+			var title = $('#title').val();
+			var startAndEnd = $('#startAndEnd').val();
+			var place = $('#place').val();
+			var detail = $('#detail').val();
+			
+			var data = {"courseId": ${Course.id}, "title": title, "startAndEnd": startAndEnd, "place": place, "detail": detail};
+			$.ajax({
+				url:'../courseManage/addOffLineCourseAgain.json',
+				data: data,
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.bool){
+						layer.msg("添加成功");
+					} else{
+						if (data.msg != null) {
+							layer.msg(data.msg);
+						} else{
+							layer.msg('出现未知错误，请联系我们');
+						}
+					}
+				}
+			})
+		}
+		
+		function updateOfflineCourse(){
+			var title = $('#title').val();
+			var startAndEnd = $('#startAndEnd').val();
+			var place = $('#place').val();
+			var detail = $('#detail').val();
+			
+			var data = {"OfflineCourseId": ${OfflineCourse.id}, "title": title, "startAndEnd": startAndEnd, "place": place, "detail": detail};
+			$.ajax({
+				url:'../courseManage/updateOfflineCourse.json',
+				data: data,
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.bool){
+						layer.msg("添加成功");
+					} else{
+						if (data.msg != null) {
+							layer.msg(data.msg);
+						} else{
+							layer.msg('出现未知错误，请联系我们');
+						}
+					}
+				}
+			})
+		}
+      
+    </script>
+
+</html>

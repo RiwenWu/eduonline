@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>全部课程</title>
+    <#include "header.flt">
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/myCollection.css">
+    <style>
+    	.courseName{
+    		text-align: center;
+    	}
+    </style>
+</head>
+
+<body>
+
+	<form class="layui-form" action="">
+		<div class="layui-form-item">
+			<label class="layui-form-label">搜索课程名称：</label>
+		  <div class="layui-inline">
+		    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+		  </div>
+		  <button class="layui-btn" data-type="reload">搜索</button>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">联动选择框</label>
+		    <div class="layui-input-inline">
+		    	<select name="quiz1">
+			        <option value="">请选择省</option>
+			        <option value="浙江" selected="">浙江省</option>
+			        <option value="你的工号">江西省</option>
+			        <option value="你最喜欢的老师">福建省</option>
+		        </select>
+		    </div>
+		</div>
+  	</form>
+  	
+    <div class="img_box" id="collection" class="flow-default">
+    	<!--
+        <div class="max_bimg">
+            <div class="img_con" id="">
+                <img onclick="" src="${request.contextPath}/statics/images/avatar5.png" />
+            </div>
+            <div class="img_footer">
+                <div class="courseName">课程名称</div>
+            </div>
+        </div>
+        -->
+    </div>
+</body>
+<script>
+layui.use(['form'], function(){
+  var form = layui.form;
+});
+
+layui.use('flow', function() {
+    var flow = layui.flow;
+    /*更多按钮 流加载  */
+    flow.load({
+        elem: '#collection' //流加载容器
+            ,
+        scrollElem: '#collection' //滚动条所在元素，一般不用填，此处只是演示需要。
+            ,
+        isAuto: false //是否自动加载
+            ,
+        isLazyimg: true,
+        done: function(page, next) { //加载下一页
+            $.ajax({
+                url: '../video/courseManage/queryCourseListByPage.json',
+                data: { "pageNo": page, "pageSize": 12 },
+                dataType: 'json',
+                type: 'post',
+                success: function(data) {
+                    
+                    var lis = [];
+                    var totalPage = data.totalPage;
+                    var courseList = data.courseList;
+                    var str = '';
+
+                    if (data.bool) {
+                        for (var i = 0; i < courseList.length; i++) {
+                            str += '<div class="max_bimg">'
+							            +'<div class="img_con" id="'+ courseList[i].id +'">'
+							                +'<img onclick="" src="${request.contextPath}/'+ courseList[i].picurl +'" />'
+							            +'</div>'
+							            +'<div class="img_footer">'
+							                +'<div class="courseName">'+ courseList[i].name +'</div>'
+							            +'</div>'
+							        +'</div>';
+
+                        }
+                        lis.push(str);
+                        next(lis.join(''), page < totalPage);
+                    } else {
+                        layer.msg('查询失败！', {
+                            icon: 2,
+                            time: 3000
+                        });
+                    }
+                    $(".img_con").click(function() {
+                        window.location.href = "../video/courseManage/courseDetail.htm?courseId=" + $(this).attr('id');
+                    });
+                }
+            });
+        }
+
+    });
+});
+</script>
+
+</html>

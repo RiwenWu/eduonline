@@ -332,4 +332,48 @@ public class addCourseController {
 		}
 		return map;
 	}
+	
+	/**
+	 * 修改课程
+	 * @param courseId
+	 * @param courseName
+	 * @param freeState
+	 * @param courseIntroduce
+	 * @param salary
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/updateCourseById.json")
+	public Map<String, Object> updateCourseByid(HttpServletRequest request, String courseId, String courseName,
+			@RequestParam(value = "freeState", required = false)String freeState, String courseIntroduce,
+			@RequestParam(value = "salary", required = false) String salary ){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("bool", false);
+		Long cId = Long.parseLong(courseId);
+		
+		Course course = new Course();
+		course.setId(cId);
+		course.setName(courseName);
+		course.setIntroduce(courseIntroduce);
+		if(freeState != null) {
+			course.setFreeState(freeState);
+		}
+		if(salary != null) {
+			course.setSalary(new BigDecimal(salary));
+		}
+		System.out.println(request.getSession().getAttribute("CoverId"));
+		if(request.getSession().getAttribute("CoverId") != null
+				|| request.getSession().getAttribute("CoverId") != "") {
+			course.setCoverId((Long) request.getSession().getAttribute("CoverId"));
+		}
+		
+		try {
+			courseService.updateByPrimaryKeySelective(course);
+			map.put("bool", true);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return map;
+	}
 }

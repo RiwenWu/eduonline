@@ -100,7 +100,7 @@ public class UserController {
 		try {
 			subject.login(token);
 			map.put("bool", true);
-			map.put("userId", userService.selsectByAccount(user.getAccount()).getId());
+			map.put("User", userService.selsectByAccount(user.getAccount()));
 		} catch (UnknownAccountException e) {
 			map.put("message", e.getMessage());
 		} catch (IncorrectCredentialsException e) {

@@ -1,6 +1,7 @@
 package com.eduonline.service.impl;
 
 import java.util.Date;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public int insertSelective(User user) throws Exception {
 		user.setCreateTime(new Date());
+		user.setUserName(randomInt(12));
 		return userMapper.insertSelective(user);
 	}
 
@@ -34,4 +36,23 @@ public class UserServiceImpl implements UserService{
 		return userMapper.selsectByAccount(account);
 	}
 
+	
+	/**
+	 * 随机生成数字
+	 * @param length
+	 * @return
+	 */
+	public static final String randomInt(int length) {
+		if (length < 1) {
+			return null;
+		}
+		Random randGen = new Random();
+		char[] numbersAndLetters = "0123456789".toCharArray();
+
+		char[] randBuffer = new char[length];
+		for (int i = 0; i < randBuffer.length; i++) {
+			randBuffer[i] = numbersAndLetters[randGen.nextInt(10)];
+		}
+		return new String(randBuffer);
+	}
 }

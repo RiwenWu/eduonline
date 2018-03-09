@@ -21,4 +21,10 @@ public interface CourseMapper {
     int updateByPrimaryKey(Course record);
     
     List<Map<String, Object>> queryCourseListBycommendState(@Param("commendState") String commendState, @Param("inputValue")String inputValue) throws Exception;
+
+    List<Map<String, Object>> queryCourselistByPage(@Param("start")Integer start, @Param("end")Integer end, @Param("inputValue") String inputValue) throws Exception;
+    
+    List<Map<String, Object>> queryCourselistByInputValue(@Param("inputValue") String inputValue) throws Exception;
+
+    Map<String, Object> queryCourseById(Long id) throws Exception;
 }

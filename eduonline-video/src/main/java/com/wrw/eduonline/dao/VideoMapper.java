@@ -1,5 +1,10 @@
 package com.wrw.eduonline.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.wrw.eduonline.entity.Video;
 
 public interface VideoMapper {
@@ -14,4 +19,6 @@ public interface VideoMapper {
     int updateByPrimaryKeySelective(Video record);
 
     int updateByPrimaryKey(Video record);
+    
+    List<Map<String, Object>> queryVideoListByCourseId(@Param("courseId")Long courseId) throws Exception;
 }
