@@ -27,4 +27,6 @@ public interface SortMapper {
      * @return
      */
     List<Sort> queryListByPId(long PId);
+    
+    List<Sort> queryListByTypeOrPId(@Param("type")String type, @Param("PId")Long PId);
 }

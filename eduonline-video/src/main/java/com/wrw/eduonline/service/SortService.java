@@ -10,4 +10,6 @@ public interface SortService {
 	List<SortDTO> queryAll(String name, String type) throws Exception;
 	
 	List<Sort> querySortListByPId(long PId) throws Exception;
+	
+	List<Sort> queryListByTypeOrPId(String tyep, String PId) throws Exception;
 }

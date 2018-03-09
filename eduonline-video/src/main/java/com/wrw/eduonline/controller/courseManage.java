@@ -186,7 +186,6 @@ public class courseManage {
 		Video video = new Video();
 		CourseVideo cv = new CourseVideo();
 
-		System.out.println(courseId);
 		Long cId = Long.parseLong(courseId);
 
 		if (file != null && file.getOriginalFilename() != null && file.getOriginalFilename().length() > 0) {
@@ -209,6 +208,7 @@ public class courseManage {
 			try {
 				// Video入库
 				videoService.insertSelective(video);
+				System.out.println(video.getId());
 				// video的Id放入session
 				request.getSession().setAttribute("VideoId", video.getId());
 				cv.setVideoId(video.getId());

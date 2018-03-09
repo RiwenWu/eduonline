@@ -127,4 +127,16 @@
     where
     	parent_id = #{PId,jdbcType=BIGINT}
   </select>
+  
+  <select id="queryListByTypeOrPId" resultMap="BaseResultMap">
+  	select 
+  		<include refid="Base_Column_List" />
+  	from
+  		us_sort
+  	where
+  		type = #{type,jdbcType=VARCHAR}
+  		<if test="PId != null">
+  			and parent_id = #{PId,jdbcType=BIGINT}
+  		</if>
+  </select>
 </mapper>

@@ -417,12 +417,15 @@
       function updateCourse() {
       		var id = $('#courseId').val();
       		courseName = $('#courseName').val();
+      		if (freeState == "1"){
+		  		courseSalary = $('#salary').val();
+		  	}
 			courseIntroduct = $('#courseIntroduct').val();
 	
 			
 			$.ajax({
-				url:'../courseManage/updateCourseById.json',
-				data: {"courseId": id, "courseName": courseName, "courseIntroduce": courseIntroduct , "freeState": freeState, "salary": courseSalary},
+				url:'../addCourse/updateCourseById.json',
+				data: {"courseId": id, "courseName": courseName, "freeState": freeState, "courseIntroduce": courseIntroduct, "salary": courseSalary},
 				dataType:'json',
 				type:'post',
 				success:function(data){
@@ -504,6 +507,8 @@
 			})
 		}
 		
+		<#if (OfflineCourse.id)?? >
+		//更新线下课程
 		function updateOfflineCourse(){
 			var title = $('#title').val();
 			var startAndEnd = $('#startAndEnd').val();
@@ -529,6 +534,7 @@
 				}
 			})
 		}
+		</#if>
       
     </script>
 

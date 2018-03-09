@@ -183,7 +183,7 @@ var courseSalary;//课程售价
 		form.on('select(state)', function(data){
 			$that = $(data.elem);
 			sortId = data.value;
-		    urls = '../video/addCourse//querySortListByPId.json'+"?Pid="+data.value;
+		    urls = '../video/addCourse/querySortListByPId.json'+"?Pid="+data.value;
 		    getJSON(urls,$that.closest("div").next());
 		});
 	
@@ -307,7 +307,7 @@ var courseSalary;//课程售价
 		  });
 	});
 
-	function getJSON(urls,even){
+		function getJSON(urls,even){
 			$.getJSON(urls, function(json){
 				if(json.bool){
 					var pid = 0;

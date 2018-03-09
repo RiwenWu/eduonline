@@ -92,4 +92,16 @@ public class SortServiceImpl implements SortService{
 		return sortMapper.queryListByPId(PId);
 	}
 
+	@Override
+	public List<Sort> queryListByTypeOrPId(String type, String PId) throws Exception {
+		List<Sort> sortList = new ArrayList<Sort>();
+		if(PId != null) {
+			Long p_Id = Long.parseLong(PId);
+			sortList = sortMapper.queryListByTypeOrPId(type, p_Id);
+		} else {
+			sortList = sortMapper.queryListByTypeOrPId(type, null);
+		}
+		return sortList;
+	}
+
 }

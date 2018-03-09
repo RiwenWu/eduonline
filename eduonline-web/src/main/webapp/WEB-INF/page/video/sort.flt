@@ -4,6 +4,11 @@
 <head>
     <title>课程分类</title>
     <#include "header.flt">
+    <style>
+    .bomb_box1 {
+		display: none;
+	}
+    </style>
 </head>
 
 <body>
@@ -13,32 +18,53 @@
         </div>
         <button class="layui-btn" data-type="reload">搜索</button>
     </div>
-    <form class="layui-form" action="">
-        <div class="layui-inline">
-            <div class="layui-input-inline">
-                <select name="modules" lay-verify="required" lay-search="">
-                    <option value="">直接选择或搜索选择</option>
-                    <option value="1">layer</option>
-                    <option value="2">form</option>
-                    <option value="3">layim</option>
-                    <option value="4">element</option>
-                </select>
-            </div>
-        </div>
-    </form>
+   
     <div class="layui-inline">
         <div class="layui-btn-group demoTable">
-            <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
-            <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
-            <button class="layui-btn" data-type="isAll">验证是否全选</button>
+            <button class="layui-btn" data-type="getCheckData">新增</button>
+            <button class="layui-btn" data-type="updateSort">修改</button>
         </div>
     </div>
     <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+    
+    <div class="bomb_box1">
+    	<form class="layui-form layui-form-pane" action="">
+			<div class="layui-form-item">
+				   <label class="layui-form-label">单选框</label>
+				   <div class="layui-input-block">
+				   <input type="radio" name="type" value="0" title="一级分类" lay-filter="firsetSort">
+				   <input type="radio" name="type" value="1" title="二级分类" lay-filter="secondSort">
+				   <input type="radio" name="type" value="2" title="三级分类" lay-filter="threeSort">
+				 </div>
+			</div>
+			<div class="layui-form-item">
+				 <label class="layui-form-label">分类名称</label>
+				 <div class="layui-input-block">
+				   <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入名称" class="layui-input">
+				 </div>
+			</div>
+			<div class="layui-form-item" >
+			    <label class="layui-form-label">一级分类</label>
+			    <div class="layui-input-block"> 
+			      <select name="first_Sort" id="first_Sort" lay-filter="state">
+			      </select>
+			    </div>
+			  </div>
+			  <div class="layui-form-item">
+			    <label class="layui-form-label">二级分类</label>
+			    <div class="layui-input-block">
+			      <select name="second_Sort" id="second_Sort" lay-filter="state">
+			      </select>
+			    </div>
+			  </div>
+		</form>
+    </div>
 </body>
 <script>
-layui.use(['form', 'table'], function() {
-    var form = layui.form,
-        layer = layui.layer,
+var form;
+layui.use(['form', 'table', 'layer'], function() {
+    form = layui.form;
+    var layer = layui.layer,
         table = layui.table;
 
 
@@ -49,6 +75,48 @@ layui.use(['form', 'table'], function() {
         })
         return false;
     });
+    
+    form.on('radio(firsetSort)', function(data){
+	  $("#first_Sort").prop('disabled', true);
+	  $("#second_Sort").prop('disabled', true);
+	  form.render('select');
+	}); 
+	
+	form.on('radio(secondSort)', function(data){
+	  //console.log(data.value); //被点击的radio的value值
+	  $("#first_Sort").prop('disabled', false);
+	  $("#second_Sort").prop('disabled', true);
+	  //初始化一级分类
+	  $.ajax({
+	    url: '../video/sort/querySortList.json',
+	    data: { 'type': 0 },
+	    dataType: 'json',
+	    type: 'post',
+	    success: function(data) {
+	        $("#first_Sort").append('<option value="' + "" + '">' + "请选择" + '</option>');
+		   	//添加first_Sort有的的下拉选项
+		    for (var i = 0; i < data.data.length; i++) {
+		        $("#first_Sort").append('<option value="' + data.data[i].id + '">' + data.data[i].name + '</option>');  
+		    }
+		    form.render('select');
+	    }
+	  });
+	}); 
+	
+	form.on('radio(threeSort)', function(data){
+	  $("#first_Sort").prop('disabled', false);
+	  $("#second_Sort").prop('disabled', false);
+	  //初始化selct
+	  getJSON('../video/addCourse/querySortList.json',$("select[name='first_Sort']").closest("div"));
+	  form.render('select');
+	}); 
+	
+	//监听selsect
+	form.on('select(state)', function(data){
+		$that = $(data.elem);
+		urls = '../video/addCourse/querySortListByPId.json'+"?Pid="+data.value;
+		getJSON(urls, $("select[name='second_Sort']").closest("div") );
+	});
 
     //方法级渲染
     table.render({
@@ -83,6 +151,18 @@ layui.use(['form', 'table'], function() {
                 var checkStatus = table.checkStatus('testReload'),
                     data = checkStatus.data;
                 layer.alert(JSON.stringify(data));
+                layer.open({
+					type: 1,
+					title: "编辑角色",
+					skin: 'admi',
+					btn: ['确定', '取消'],
+					area: ['600px', '600px'],
+					content: $(".bomb_box1")
+				}, function(index, layero){
+					  //按钮【按钮一】的回调
+					}, function(index){
+					  //按钮【按钮二】的回调
+				});
             },
             getCheckLength: function() { //获取选中数目
                 var checkStatus = table.checkStatus('testReload'),
@@ -101,6 +181,38 @@ layui.use(['form', 'table'], function() {
     });
 
 });
+
+		function getJSON(urls,even){
+			$.getJSON(urls, function(json){
+				if(json.bool){
+					var pid = 0;
+					var name = even.find("select").attr("name");
+			        var select = "<select name=\"" + name + "\" lay-filter=\"state\" id=\""+ name +"\">";
+			        select += "<option value=\"0\">请选择 </option>";
+			        $(json.list).each(function(){
+			        	var i = 0;
+			        	select += "<option value=\"" + this.id + "\"";
+			           	if(second_Sort == this.name){
+			              select += " selected=\"selected\" ";
+			              pid = this.id;
+			            }
+			            select += ">" + this.name + "</option>";
+			            i++;
+			        });
+			        select += "</select>";
+			        even.html(select);
+			        
+			        var nextName = even.parent().next().find("select").attr("name");
+			        even.next().html("<select name=\"" + nextName + "\" lay-filter=\"state\"><option value=\"0\">请选择 </option></select>");
+		        	form.render('select');
+		        	if(pid != 0){
+		        		getJSON(urls+"?id="+pid,even.next());
+		        	}
+		        } else {
+		        	layer.msg('一级分类列表获取失败');
+		        }
+	      	});
+		}
 </script>
 
 </html>

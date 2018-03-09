@@ -32,7 +32,7 @@
       #{modifyTime,jdbcType=TIMESTAMP}, #{path,jdbcType=VARCHAR}, #{examineState,jdbcType=VARCHAR}, 
       #{attachmentId,jdbcType=BIGINT}, #{state,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.wrw.eduonline.entity.Video" >
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.wrw.eduonline.entity.Video" >
     insert into us_video
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
